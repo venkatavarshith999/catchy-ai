@@ -1,0 +1,15 @@
+CATCHY AI - START HERE
+
+The localhost address works ONLY while the Catchy server is running.
+
+1. Right-click the ZIP and choose Extract All.
+2. Open the extracted catchy-ai folder.
+3. Double-click START-WINDOWS.bat, not index.html.
+4. Wait for: Catchy AI is ready: http://localhost:8000
+5. Your browser opens automatically. KEEP THE TERMINAL WINDOW OPEN.
+
+Requires Python 3.11 or newer. If Python is missing, the launcher shows
+installation instructions. If startup fails, send the terminal error.
+
+Closing the terminal or pressing Ctrl+C stops the website.
+Read README.md for features, tests, optional AI and deployment.

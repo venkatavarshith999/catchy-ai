@@ -1,0 +1,14 @@
+{
+  "name": "catchy-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Development checks for the dependency-free Catchy AI web application",
+  "scripts": {
+    "check": "node --check frontend/app.js && node tests/test_frontend.cjs",
+    "format": "prettier --write frontend tests/*.cjs *.json .github/workflows/*.yml",
+    "format:check": "prettier --check frontend tests/*.cjs *.json .github/workflows/*.yml"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
+}

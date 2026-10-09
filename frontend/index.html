@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#101d1c" />
+    <meta
+      name="description"
+      content="Catchy AI helps you recognize suspicious requests and manipulation in conversations."
+    />
+    <title>Catchy AI — A little clarity. A lot more peace of mind.</title>
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="#overview"
+          ><span class="brand-icon">c<span>·</span></span
+          ><span>catchy<span class="brand-ai">AI</span></span></a
+        >
+        <div class="workspace">
+          <span class="workspace-icon">◈</span>
+          <div>Personal workspace<small>Your safety, connected</small></div>
+          <span class="workspace-dot"></span>
+        </div>
+        <p class="nav-caption">YOUR SPACE</p>
+        <nav>
+          <button class="nav-item active" data-page="overview">
+            <span>▦</span>Overview</button
+          ><button class="nav-item" data-page="monitor">
+            <span>◉</span>Live protection<span class="nav-live"></span></button
+          ><button class="nav-item" data-page="history">
+            <span>◷</span>Session history</button
+          ><button class="nav-item" data-page="contacts">
+            <span>♧</span>Trusted circle
+          </button>
+        </nav>
+        <p class="nav-caption second">EXPLORE</p>
+        <nav>
+          <button class="nav-item" data-page="lab">
+            <span>◇</span>Demo studio<span class="tiny-tag"
+              >TRY IT</span
+            ></button
+          ><button class="nav-item" data-page="settings">
+            <span>⚙</span>Preferences
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="privacy-mini">
+            <span>▣</span><strong>Private by intention.</strong>
+            <p>No raw audio stored.<br />You control what stays.</p>
+            <button data-page="settings">Your privacy controls ↗</button>
+          </div>
+          <button id="account-button" class="account">
+            <span class="avatar" id="avatar">G</span
+            ><span
+              ><strong id="account-name">Guest workspace</strong
+              ><small id="account-detail"
+                >Sign in to save your sessions</small
+              ></span
+            ><span>↗</span>
+          </button>
+        </div>
+      </aside>
+      <main>
+        <header class="topbar">
+          <button
+            id="menu-button"
+            class="icon-button mobile-only"
+            aria-label="Toggle navigation"
+          >
+            ☰
+          </button>
+          <div class="breadcrumb">
+            Workspace <span>/</span> <strong id="page-label">Overview</strong>
+          </div>
+          <div class="top-actions">
+            <span class="connection"
+              ><i></i
+              ><span id="connection-label">Checking connection</span></span
+            ><button
+              class="help-button"
+              id="help-button"
+              aria-label="About Catchy AI"
+            >
+              ?</button
+            ><span class="top-avatar" id="top-avatar">G</span>
+          </div>
+        </header>
+        <div class="page" id="page"></div>
+        <footer>
+          <span>© 2026 Catchy AI</span
+          ><span>Designed for confidence. Built with care.</span
+          ><button id="footer-privacy">Privacy & consent ↗</button>
+        </footer>
+      </main>
+    </div>
+    <dialog id="auth-dialog">
+      <form id="auth-form" class="dialog-content">
+        <button
+          type="button"
+          class="dialog-close"
+          data-close="auth-dialog"
+          aria-label="Close"
+        >
+          ×</button
+        ><span class="eyebrow">YOUR PERSONAL WORKSPACE</span>
+        <h2 id="auth-title">Welcome to peace of mind.</h2>
+        <p>Keep your sessions and trusted people in one place.</p>
+        <label id="name-label"
+          >Your name<input
+            id="auth-name"
+            autocomplete="name"
+            minlength="2"
+            maxlength="80" /></label
+        ><label
+          >Email address<input
+            id="auth-email"
+            type="email"
+            autocomplete="email"
+            required
+            maxlength="254" /></label
+        ><label
+          >Password<input
+            id="auth-password"
+            type="password"
+            autocomplete="new-password"
+            minlength="10"
+            maxlength="128"
+            required
+            placeholder="At least 10 characters"
+        /></label>
+        <p class="form-error" id="auth-error" role="alert"></p>
+        <button class="btn primary full" type="submit" id="auth-submit">
+          Create account →</button
+        ><button class="text-button full" type="button" id="auth-switch">
+          Already have an account? Sign in</button
+        ><small class="muted"
+          >Local accounts use securely hashed passwords. This prototype does not
+          include email verification or password recovery.</small
+        >
+      </form>
+    </dialog>
+    <dialog id="consent-dialog">
+      <div class="dialog-content">
+        <button
+          class="dialog-close"
+          data-close="consent-dialog"
+          aria-label="Close"
+        >
+          ×</button
+        ><span class="eyebrow">YOU ARE IN CONTROL</span>
+        <h2>Before we listen.</h2>
+        <p id="consent-copy">
+          Conversation text is processed by this server. Audio is not recorded
+          by Catchy AI. Only start with permission from everyone involved.
+        </p>
+        <div class="notice">
+          Microphone mode uses your browser’s speech recognition, which may send
+          audio to the browser vendor. It does not access ordinary phone calls.
+          Availability varies by browser.
+        </div>
+        <label class="check-label"
+          ><input type="checkbox" id="consent-check" /> I have permission to
+          process this conversation and understand how this mode works.</label
+        ><button class="btn primary full" id="consent-start">
+          Start protected session →
+        </button>
+      </div>
+    </dialog>
+    <dialog id="detail-dialog">
+      <div class="dialog-content wide">
+        <button
+          class="dialog-close"
+          data-close="detail-dialog"
+          aria-label="Close"
+        >
+          ×
+        </button>
+        <div id="detail-content"></div>
+      </div>
+    </dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

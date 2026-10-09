@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+data/
+*.db
+*.db-shm
+*.db-wal
+.venv/
+node_modules/
+dist/
+artifacts/
+
+deployment/current-image

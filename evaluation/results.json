@@ -1,0 +1,97 @@
+{
+  "warning": "Synthetic development cases including known baseline gaps. NOT a generalization benchmark.",
+  "provider": "rules",
+  "cases": 12,
+  "true_positive": 5,
+  "false_positive": 1,
+  "false_negative": 1,
+  "true_negative": 5,
+  "precision": 0.8333333333333334,
+  "recall": 0.8333333333333334,
+  "results": [
+    {
+      "id": "otp",
+      "expected": "high",
+      "actual": "high",
+      "score": 65,
+      "match": true
+    },
+    {
+      "id": "protective",
+      "expected": "low",
+      "actual": "low",
+      "score": 0,
+      "match": true
+    },
+    {
+      "id": "hospital",
+      "expected": "low",
+      "actual": "low",
+      "score": 13,
+      "match": true
+    },
+    {
+      "id": "bank-pressure",
+      "expected": "high",
+      "actual": "high",
+      "score": 98,
+      "match": true
+    },
+    {
+      "id": "remote",
+      "expected": "high",
+      "actual": "high",
+      "score": 60,
+      "match": true
+    },
+    {
+      "id": "disclaimer",
+      "expected": "high",
+      "actual": "high",
+      "score": 65,
+      "match": true
+    },
+    {
+      "id": "ordinary",
+      "expected": "low",
+      "actual": "low",
+      "score": 0,
+      "match": true
+    },
+    {
+      "id": "bank-role-only",
+      "expected": "low",
+      "actual": "low",
+      "score": 12,
+      "match": true
+    },
+    {
+      "id": "fear",
+      "expected": "high",
+      "actual": "high",
+      "score": 93,
+      "match": true
+    },
+    {
+      "id": "support-advice",
+      "expected": "low",
+      "actual": "low",
+      "score": 0,
+      "match": true
+    },
+    {
+      "id": "paraphrase-known-gap",
+      "expected": "high",
+      "actual": "low",
+      "score": 0,
+      "match": false
+    },
+    {
+      "id": "quoted-scam-known-gap",
+      "expected": "low",
+      "actual": "high",
+      "score": 65,
+      "match": false
+    }
+  ]
+}

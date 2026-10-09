@@ -1,0 +1,36 @@
+services:
+  app:
+    image: ${CATCHY_IMAGE:?Set CATCHY_IMAGE to the published immutable image tag}
+    environment:
+      APP_ORIGIN: https://${DOMAIN:?Set DOMAIN}
+      COOKIE_SECURE: "1"
+      LLM_PROVIDER: rules
+    volumes:
+      - catchy_data:/app/data
+    restart: unless-stopped
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 512M
+  proxy:
+    image: caddy:2-alpine
+    ports: ["80:80", "443:443"]
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  catchy_data:
+  caddy_data:
+  caddy_config:

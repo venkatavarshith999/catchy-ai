@@ -1,0 +1,2 @@
+# No third-party runtime packages. Requires Python 3.11+.
+# Tests use the Python standard library; JS checks use Node.js 20+.

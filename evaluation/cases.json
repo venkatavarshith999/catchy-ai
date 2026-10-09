@@ -1,0 +1,14 @@
+[
+ {"id":"otp","turns":["Please read your OTP to me"],"expected":"high"},
+ {"id":"protective","turns":["Never share your OTP or password"],"expected":"low"},
+ {"id":"hospital","turns":["Your hospital appointment is urgent","Call our published number to verify"],"expected":"low"},
+ {"id":"bank-pressure","turns":["This is your bank","Your account will be frozen right now","Do not tell your family","Read your verification code to me"],"expected":"high"},
+ {"id":"remote","turns":["Please install AnyDesk for remote access"],"expected":"high"},
+ {"id":"disclaimer","turns":["Never share your OTP. But read the verification code to me"],"expected":"high"},
+ {"id":"ordinary","turns":["Hello, how are you?","Let us meet for lunch"],"expected":"low"},
+ {"id":"bank-role-only","turns":["This is your bank","Please call the number on your card"],"expected":"low"},
+ {"id":"fear","turns":["I am a police officer","You face arrest right now","Keep this secret","Transfer your savings to our safe account"],"expected":"high"},
+ {"id":"support-advice","turns":["Never install remote access software for strangers"],"expected":"low"},
+ {"id":"paraphrase-known-gap","turns":["To secure your balance, relocate it to the destination I dictate. No need to involve your relatives."],"expected":"high"},
+ {"id":"quoted-scam-known-gap","turns":["The caller yesterday said please read your OTP to me. I refused and reported the scam."],"expected":"low"}
+]

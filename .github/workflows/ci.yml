@@ -1,0 +1,78 @@
+name: Verify and package
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Source formatting
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run format:check
+      - name: Python syntax and API/security regressions
+        run: |
+          python -m compileall -q backend llms
+          python -m unittest discover -s tests -v
+      - name: JavaScript syntax and guest detector
+        run: |
+          node --check frontend/app.js
+          node tests/test_frontend.cjs
+      - name: Synthetic evaluation report
+        run: python -m evaluation.run
+      - name: Container health smoke test
+        run: |
+          docker build -t catchy:test .
+          docker run -d --name catchy-test -p 127.0.0.1:8000:8000 catchy:test
+          for attempt in $(seq 1 15); do
+            if curl --fail http://127.0.0.1:8000/api/health; then exit 0; fi
+            sleep 2
+          done
+          docker logs catchy-test
+          exit 1
+      - name: Stop test container
+        if: always()
+        run: docker rm -f catchy-test || true
+      - name: Package sources
+        run: python scripts/package.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: catchy-ai-source
+          path: artifacts/catchy-ai.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-evaluation
+          path: evaluation/results.json
+  publish-image:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Image name
+        id: image
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.image.outputs.name }}:${{ github.sha }}
