@@ -237,6 +237,7 @@ def test_admin_privacy_metrics_static(client):
     assert client.get("/api/metrics").status_code == 403
     assert client.get("/backend/product.py").status_code == 404
     assert client.get("/").status_code == 200
+    assert "/product.js" in client.get("/index.html").text
     assert client.get("/sw.js").status_code == 200
     assert (
         client.post("/api/v2/analytics", json={"event": "alert_shown", "consent": False}).json()[

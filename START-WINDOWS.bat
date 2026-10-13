@@ -17,6 +17,8 @@ echo Install Python 3.11 or newer from https://www.python.org/downloads/
 echo Enable Add Python to PATH, extract this ZIP fully, and try again.
 goto finished
 :dependencies
+.venv\Scripts\python.exe -m pip --version >nul 2>&1
+if errorlevel 1 .venv\Scripts\python.exe -m ensurepip --upgrade
 .venv\Scripts\python.exe -m pip install -r requirements.txt
 if errorlevel 1 goto finished
 echo Keep this window open while using Catchy AI.

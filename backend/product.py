@@ -930,6 +930,7 @@ def create_app(database_url=None, redis_url=None):
                 pass
 
     @app.get("/")
+    @app.get("/index.html")
     @app.get("/phone.html")
     @app.get("/dashboard")
     def index():

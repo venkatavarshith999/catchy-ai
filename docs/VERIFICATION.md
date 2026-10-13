@@ -33,3 +33,7 @@ Inspect `evaluation/multilingual-results.json` for every case and later-language
 One test-client deprecation warning comes from FastAPI/Starlette's current httpx adapter. It does not fail the suite; migrate the test transport when the upstream compatibility path is finalized.
 
 This is a tested product beta source release. These remaining checks must be completed before presenting it as a validated public safety service.
+
+## Archive verification
+
+The source ZIP passed CRC/inventory checks, excluded runtime databases and credentials, and included all 13 synthetic fixture sets, frontend assets, backend, SQL schema, native source and workflows. An extracted copy started its own real HTTP server and passed the 12-request multilingual smoke check using the installed Python dependencies (p50 9.96 ms, p95 20.11 ms). This also excludes audio recognition. The final documentation and startup-alias correction were packaged after that check.
