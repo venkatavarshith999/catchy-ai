@@ -1,10 +1,10 @@
 {
   "name": "catchy-ai",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "description": "Catchy AI multilingual conversation-safety product",
   "scripts": {
-    "check": "node --check frontend/product.js && node --check frontend/asr.js && node --check frontend/i18n.js && node --check frontend/sw.js && node tests/test_frontend.cjs && node tests/test_asr.mjs",
+    "check": "node --check frontend/product.js && node --check frontend/asr.js && node --check frontend/i18n.js && node --check frontend/sw.js && node tests/test_frontend.cjs && node tests/test_asr.mjs && node tests/test_lifecycle.mjs",
     "format": "prettier --write frontend mobile/native-entry.js tests/*.mjs scripts/*.mjs *.json .github/workflows/*.yml",
     "format:check": "prettier --check frontend mobile/native-entry.js tests/*.mjs scripts/*.mjs *.json .github/workflows/*.yml",
     "build": "node scripts/build-mobile.mjs",

@@ -12,6 +12,7 @@ from contextlib import asynccontextmanager
 from typing import Literal
 
 from fastapi import (
+    BackgroundTasks,
     FastAPI,
     HTTPException,
     Request,
@@ -85,6 +86,20 @@ class Credentials(Input):
         if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", v):
             raise ValueError("email")
         return v.lower()
+
+
+class ResetEmail(Input):
+    email: str = Field(min_length=5, max_length=254)
+
+    @field_validator("email")
+    @classmethod
+    def email_valid(cls, value):
+        return Credentials.email_valid(value)
+
+
+class ResetPassword(ResetEmail):
+    code: str = Field(pattern=r"^[0-9]{6}$")
+    password: str = Field(min_length=10, max_length=128)
 
 
 class Preferences(Input):
@@ -217,7 +232,7 @@ def create_app(database_url=None, redis_url=None):
 
     app = FastAPI(
         title="Catchy AI",
-        version="2.0.0",
+        version="2.0.1",
         lifespan=lifespan,
         docs_url=None if production else "/api/docs",
         openapi_url=None if production else "/api/openapi.json",
@@ -351,7 +366,7 @@ def create_app(database_url=None, redis_url=None):
             live.redis.ping()
         return {
             "status": "ok",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "database": "postgresql"
             if engine.dialect.name == "postgresql"
             else "sqlite-development",
@@ -368,7 +383,7 @@ def create_app(database_url=None, redis_url=None):
             20,
             600,
         )
-        with Session.begin() as db:
+        with live.lock("identity:" + digest(data.email)), Session.begin() as db:
             user = db.scalar(select(User).where(User.email == data.email))
             if action == "register":
                 if user:
@@ -407,6 +422,79 @@ def create_app(database_url=None, redis_url=None):
                 path="/",
             )
             return {"user": user_json(user), "preferences": user.preferences}
+
+    def send_reset_code(address, code):
+        try:
+            send_mail(
+                address,
+                "Reset your Catchy AI password",
+                f"Your password reset code is {code}. It expires in 10 minutes. If you did not request this, ignore it.",
+            )
+        except Exception:
+            # A provider failure never reveals whether an account exists.
+            pass
+
+    @app.post("/api/v2/password/request")
+    def password_request(data: ResetEmail, request: Request, background: BackgroundTasks):
+        limited("reset-ip:" + digest(request.client.host if request.client else "unknown"), 10, 600)
+        key = "reset:" + digest(data.email)
+        limited(key, 3, 600)
+        code = f"{secrets.randbelow(1000000):06d}"
+        with live.lock("identity:" + digest(data.email)), Session() as db:
+            user = db.scalar(select(User).where(User.email == data.email))
+            if user:
+                live.set(
+                    key,
+                    {
+                        "user_id": user.id,
+                        "hash": digest(code),
+                        "credential": digest(user.password),
+                        "attempts": 0,
+                        "expires": time.time() + 600,
+                    },
+                    600,
+                )
+                background.add_task(send_reset_code, user.email, code)
+        result = {"accepted": True, "email_configured": mail_available()}
+        if not production and os.environ.get("DEV_EMAIL_CODES") == "1":
+            # Same response shape for absent accounts; the dummy code cannot authorize a reset.
+            result["development_code"] = code
+        return result
+
+    @app.post("/api/v2/password/confirm")
+    def password_confirm(data: ResetPassword, request: Request, response: Response):
+        limited(
+            "reset-confirm:" + digest(request.client.host if request.client else "unknown"), 30, 600
+        )
+        key = "reset:" + digest(data.email)
+        with live.lock("identity:" + digest(data.email)):
+            record = live.get(key)
+            if not record or record["attempts"] >= 5 or record["expires"] <= time.time():
+                raise HTTPException(400, "invalid_reset_code")
+            record["attempts"] += 1
+            live.set(key, record, max(1, int(record["expires"] - time.time())))
+            if not hmac.compare_digest(record["hash"], digest(data.code)):
+                raise HTTPException(400, "invalid_reset_code")
+            with live.lock("account:" + record["user_id"]), Session.begin() as db:
+                user = db.get(User, record["user_id"])
+                if (
+                    not user
+                    or user.email != data.email
+                    or not hmac.compare_digest(record["credential"], digest(user.password))
+                ):
+                    raise HTTPException(400, "invalid_reset_code")
+                user.password = password_hash(data.password)
+                user.verified = True
+                db.execute(delete(Login).where(Login.user_id == user.id))
+                for call in db.scalars(select(Call).where(Call.user_id == user.id)):
+                    live.delete("call:" + call.id)
+                    if call.status == "active":
+                        call.status = "completed"
+                        call.updated = time.time()
+                live.delete("verify:" + user.id)
+            live.delete(key)
+        response.delete_cookie("catchy_v2", path="/")
+        return {"reset": True}
 
     @app.get("/api/v2/me")
     def me(request: Request):
@@ -511,7 +599,9 @@ def create_app(database_url=None, redis_url=None):
         if not data.consent:
             raise HTTPException(422, "consent_required")
         allowed_language(data.language)
-        with Session.begin() as db:
+        with Session() as db:
+            owner_id = authenticate(request, db).id
+        with live.lock("account:" + owner_id), Session.begin() as db:
             user = authenticate(request, db)
             prefs = dict(DEFAULTS) | user.preferences
             call = Call(
@@ -540,7 +630,7 @@ def create_app(database_url=None, redis_url=None):
             }
 
     def process_turn(cid, data, user_id):
-        with live.lock(cid), Session.begin() as db:
+        with live.lock("account:" + user_id), live.lock(cid), Session.begin() as db:
             user = db.get(User, user_id)
             if not user:
                 raise HTTPException(401, "sign_in_required")
@@ -802,11 +892,19 @@ def create_app(database_url=None, redis_url=None):
 
     @app.delete("/api/v2/account")
     def delete_account(request: Request, response: Response):
-        with Session.begin() as db:
+        with Session() as db:
+            owner = authenticate(request, db)
+            owner_id, owner_email = owner.id, owner.email
+        with (
+            live.lock("identity:" + digest(owner_email)),
+            live.lock("account:" + owner_id),
+            Session.begin() as db,
+        ):
             user = authenticate(request, db)
             for call in db.scalars(select(Call).where(Call.user_id == user.id)):
                 live.delete("call:" + call.id)
             live.delete("verify:" + user.id)
+            live.delete("reset:" + digest(user.email))
             db.delete(user)
         response.delete_cookie("catchy_v2", path="/")
         return {"ok": True}

@@ -2,13 +2,13 @@
 
 ## Completed locally
 
-- Python product/privacy/security and legacy regression suite: **46 passed**, **1 skipped**. The skipped case requires running PostgreSQL and Redis; CI configures those services.
-- JavaScript syntax checks and preserved guest-engine regressions: **10 scenarios passed**, plus **2 ASR lifecycle regressions passed** (stale speech timing and late microphone-permission cleanup). Two known legacy detector limitations remain documented in its evaluation set.
+- Python product/privacy/security and legacy regression suite: **51 passed**, **1 skipped**. The skipped case requires running PostgreSQL and Redis; CI configures those services.
+- JavaScript syntax checks and preserved guest-engine regressions: **10 scenarios passed**, plus **2 ASR lifecycle regressions passed** and **2 session-ordering regressions passed** (stale speech timing and late microphone-permission cleanup). Two known legacy detector limitations remain documented in its evaluation set.
 - Ruff lint/format and Prettier formatting: passed for the configured source scope.
 - Frontend/native asset build and Capacitor Android sync: passed. Public shell tests fetch every asset in the offline manifest and check catalog key parity across all 13 enabled languages.
 - npm dependency audit: **0 known vulnerabilities** at scan time.
 - Python dependency audit: **no known vulnerabilities** for all 59 distributions installed in the tested environment, including development dependencies. Installed versions were enumerated and scanned with pip-audit's pinned-input/no-resolver mode because this sandbox's virtualenv lacked its own pip command. CI uses a normal pip-installed environment and scans requirements. Optional Whisper dependencies were not installed or audited here.
-- Real HTTP process startup and 12 multilingual guest-analysis requests: passed. Measured text HTTP round-trip p50 **10.14 ms**, p95 **20.35 ms** on this development host. This excludes audio, recognition, a remote network and optional LLM work.
+- Real HTTP process startup and 12 multilingual guest-analysis requests: passed. Measured text HTTP round-trip p50 **3.6 ms**, p95 **5.43 ms** on this development host. This excludes audio, recognition, a remote network and optional LLM work.
 - Synthetic multilingual evaluation: **260 cases**, 20 per enabled language. Authored development examples for English/Hindi/Telugu; lexicon-derived smoke fixtures for the other ten. No independent holdout.
 
 ## Measured Wave 1 text results
@@ -37,3 +37,7 @@ This is a tested product beta source release. These remaining checks must be com
 ## Archive verification
 
 The source ZIP passed CRC/inventory checks, excluded runtime databases and credentials, and included all 13 synthetic fixture sets, frontend assets, backend, SQL schema, native source and workflows. An extracted copy started its own real HTTP server and passed the 12-request multilingual smoke check using the installed Python dependencies (p50 9.96 ms, p95 20.11 ms). This also excludes audio recognition. The final documentation and startup-alias correction were packaged after that check.
+
+## 2.0.1 continuation
+
+Added password recovery, five API regressions (revocation/context cleanup, absent-account response shape, attempt/expiry limits, deleted/recreated accounts, request/input limits), session-generation guards and status messages inside dialogs. Unit tests mock or disable delivery; no real email or external notification was sent. The HTTP smoke now also checks registration, cookie authentication, a signed-in risk update, retention off, session finish and account deletion. Browser/device and deployment limitations above remain.

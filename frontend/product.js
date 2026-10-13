@@ -1,3 +1,4 @@
+import { createCurrentSession } from "./lifecycle.js";
 import {
   loadLanguage,
   t,
@@ -68,12 +69,24 @@ function notice(key, literal = false) {
     $("#danger-feedback").hidden = false;
     $("#danger-feedback").textContent = literal ? key : t(key);
   }
+  if ($("#modal").open) {
+    let status = $("#modal-notice");
+    if (!status) {
+      status = document.createElement("p");
+      status.id = "modal-notice";
+      status.setAttribute("role", "status");
+      $("#modal-body").append(status);
+    }
+    status.textContent = literal ? key : t(key);
+  }
   $("#notice").textContent = literal ? key : t(key);
   $("#notice").classList.add("show");
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => $("#notice").classList.remove("show"), 6500);
 }
 const errors = {
+  invalid_reset_code: "resetInvalid",
+  rate_limited: "tooManyRequests",
   verify_email_required: "verificationNeeded",
   delivery_not_configured: "providerUnavailable",
   email_not_configured: "providerUnavailable",
@@ -234,40 +247,53 @@ async function start() {
   try {
     if (S.mode === "speaker" && S.preferences.asr === "selfhost" && !S.user)
       throw Error("authNeeded");
-    if (S.user)
-      S.call = await api("/calls", "POST", {
-        title: t("sessionTitle"),
-        language,
-        mode: S.mode,
-        consent: true,
-      });
-    else S.call = null;
-    if (generation !== S.generation) {
-      if (S.call && S.user)
-        await api(`/calls/${S.call.id}/finish`, "POST", {}).catch(() => {});
-      return;
-    }
+    const call = S.user
+      ? await createCurrentSession(
+          () =>
+            api("/calls", "POST", {
+              title: t("sessionTitle"),
+              language,
+              mode: S.mode,
+              consent: true,
+            }),
+          () => generation === S.generation,
+          (stale) => api(`/calls/${stale.id}/finish`, "POST", {}),
+        )
+      : null;
+    if (generation !== S.generation) return;
+    S.call = call;
     S.running = true;
     location.hash = "home";
     go("home");
     if (navigator.wakeLock)
       try {
-        S.wake = await navigator.wakeLock.request("screen");
+        const wake = await navigator.wakeLock.request("screen");
+        if (generation !== S.generation) {
+          await wake.release();
+          return;
+        }
+        S.wake = wake;
       } catch {
         notice("phoneNote");
       }
     try {
       const native = await import("./native.js");
       await native.keepAwake();
+      if (generation !== S.generation && !S.running) await native.allowSleep();
     } catch {}
+    if (generation !== S.generation || !S.running) return;
     if (S.mode === "speaker") {
       const provider = await chooseASR(S.preferences.asr);
       if (generation !== S.generation || !S.running) return;
       S.asr = provider;
       await provider.start({
         language: languageInfo().speech,
-        onText: (text, ended) => enqueue(text, ended),
-        onError: (key) => fail(key),
+        onText: (text, ended) => {
+          if (generation === S.generation) enqueue(text, ended);
+        },
+        onError: (key) => {
+          if (generation === S.generation) fail(key);
+        },
       });
       if (generation !== S.generation || !S.running) {
         provider.stop();
@@ -278,6 +304,7 @@ async function start() {
     if (S.mode === "demo") playDemo(0, S.generation);
     if (S.user && S.mode !== "demo") connectLive();
   } catch (error) {
+    if (generation !== S.generation) return;
     await fail(
       error.name === "NotAllowedError" ? "permissionDenied" : error.message,
     );
@@ -599,7 +626,12 @@ function settings() {
 }
 function authForm(register = false) {
   modal(
-    `<h2>${esc(t(register ? "register" : "signIn"))}</h2><p>${esc(t("signinPrivacy"))}</p><form id="auth-form" data-register="${register}">${register ? field("name", "name", "text", "", 'required minlength="2" maxlength="80" autocomplete="name"') : ""}${field("email", "email", "email", "", 'required autocomplete="email"')}${field("password", "password", "password", "", 'required minlength="10" maxlength="128" autocomplete="' + (register ? "new-password" : "current-password") + '"')}<p id="form-error" class="form-error" role="alert"></p><button class="primary wide">${esc(t(register ? "register" : "signIn"))}</button></form><div class="actions">${button(register ? "signIn" : "register", register ? "loginForm" : "registerForm")}${button("guest", "close")}</div><p class="support">${esc(t("accountLocal"))}</p>`,
+    `<h2>${esc(t(register ? "register" : "signIn"))}</h2><p>${esc(t("signinPrivacy"))}</p><form id="auth-form" data-register="${register}">${register ? field("name", "name", "text", "", 'required minlength="2" maxlength="80" autocomplete="name"') : ""}${field("email", "email", "email", "", 'required autocomplete="email"')}${field("password", "password", "password", "", 'required minlength="10" maxlength="128" autocomplete="' + (register ? "new-password" : "current-password") + '"')}<p id="form-error" class="form-error" role="alert"></p><button class="primary wide">${esc(t(register ? "register" : "signIn"))}</button></form><div class="actions">${button(register ? "signIn" : "register", register ? "loginForm" : "registerForm")}${button("guest", "close")}${!register ? button("forgotPassword", "forgotPassword") : ""}</div><p class="support">${esc(t("accountLocal"))}</p>`,
+  );
+}
+function resetForm(email = "", requested = false, code = null) {
+  modal(
+    `<h2>${esc(t("resetPassword"))}</h2><p>${esc(t(requested ? "resetRequested" : "resetHelp"))}</p>${code ? `<p>${esc(t("developmentCode"))}: ${esc(code)}</p>` : ""}<form id="${requested ? "reset-confirm-form" : "reset-request-form"}">${field("email", "email", "email", email, 'required autocomplete="email"')}${requested ? field("verificationCode", "code", "text", "", 'required pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="one-time-code"') + field("newPassword", "password", "password", "", 'required minlength="10" maxlength="128" autocomplete="new-password"') : ""}<p id="form-error" class="form-error" role="alert"></p><button class="primary wide">${esc(t(requested ? "resetPassword" : "sendCode"))}</button></form><div class="actions">${button("signIn", "loginForm")}${button("cancel", "close")}</div>`,
   );
 }
 function verifyForm() {
@@ -705,6 +737,7 @@ document.addEventListener("click", async (event) => {
     if (action === "close") $("#modal").close();
     if (action === "account" || action === "loginForm") authForm();
     if (action === "registerForm") authForm(true);
+    if (action === "forgotPassword") resetForm();
     if (action === "scam" || action === "genuine") {
       if (S.running) return;
       S.demoType = action;
@@ -838,6 +871,27 @@ document.addEventListener("submit", async (event) => {
       nav();
       render();
       if (S.invitation) showInvitation();
+    }
+    if (form.id === "reset-request-form") {
+      const result = await api("/password/request", "POST", values);
+      resetForm(values.email, true, result.development_code);
+      if (!result.email_configured && !result.development_code)
+        notice("providerUnavailable");
+    }
+    if (form.id === "reset-confirm-form") {
+      await api("/password/confirm", "POST", values);
+      await stop(false);
+      S.user = null;
+      S.call = null;
+      S.calls = [];
+      S.contacts = [];
+      S.turns = [];
+      S.result = null;
+      S.preferences = defaultPreferences();
+      localStorage.removeItem("catchy-preferences");
+      go("home");
+      authForm();
+      notice("resetSuccess");
     }
     if (form.id === "turn-form") {
       enqueue(values.text);

@@ -88,6 +88,26 @@ def main():
                     )
                     assert response.status_code == 200 and response.json()["level"] == "high"
                     timings.append((time.perf_counter() - start) * 1000)
+                credentials = {
+                    "name": "Smoke Test",
+                    "email": "smoke@example.test",
+                    "password": "synthetic-password-123",
+                }
+                assert client.post("/api/v2/auth/register", json=credentials).status_code == 200
+                call = client.post(
+                    "/api/v2/calls", json={"mode": "typed", "language": "en", "consent": True}
+                )
+                assert call.status_code == 201
+                cid = call.json()["id"]
+                result = client.post(
+                    f"/api/v2/calls/{cid}/turns",
+                    json={"text": "Read your OTP to me", "request_id": "http-smoke-0001"},
+                )
+                assert result.status_code == 200 and result.json()["alert_new"]
+                assert client.get(f"/api/v2/calls/{cid}").json()["turns"] == []
+                assert client.post(f"/api/v2/calls/{cid}/finish", json={}).status_code == 200
+                assert client.delete("/api/v2/account").status_code == 200
+                assert client.get("/api/v2/me").status_code == 401
                 report = {
                     "kind": "local-http-text-roundtrip",
                     "requests": len(timings),
@@ -95,6 +115,7 @@ def main():
                     "p95_ms": round(sorted(timings)[int(0.95 * len(timings)) - 1], 2),
                     "audio_end_to_end_ms": None,
                     "field_validated": False,
+                    "account_lifecycle": "passed",
                 }
                 (ROOT / "evaluation/http-benchmark.json").write_text(
                     json.dumps(report, indent=2) + "\n", encoding="utf-8"

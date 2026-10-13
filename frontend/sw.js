@@ -1,5 +1,5 @@
 // Only paths from this public manifest can enter the offline cache. APIs never do.
-const CACHE = "catchy-shell-v2.1";
+const CACHE = "catchy-shell-v2.2";
 let allowed;
 async function publicPaths() {
   if (allowed) return allowed;

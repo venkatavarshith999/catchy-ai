@@ -18,7 +18,7 @@ Added FastAPI, SQLAlchemy/PostgreSQL, Redis TTL/locks, secure sessions, rate lim
 
 ## 5. Evaluation and CI
 
-Added 260 labeled synthetic cases with clearly identified authored versus lexicon-derived provenance, confusion metrics, protected admin evaluation, HTTP smoke timing and CI checks. Final local suite: 46 Python tests, 10 legacy JavaScript scenarios and 2 ASR lifecycle cases pass; the real PostgreSQL/Redis case is skipped locally and required in CI. Reports retain misses; no field or audio accuracy claim is made.
+Added 260 labeled synthetic cases with clearly identified authored versus lexicon-derived provenance, confusion metrics, protected admin evaluation, HTTP smoke timing and CI checks. Final local suite: 51 Python tests, 10 legacy JavaScript scenarios, 2 ASR lifecycle cases and 2 session-ordering cases pass; the real PostgreSQL/Redis case is skipped locally and required in CI. Reports retain misses; no field or audio accuracy claim is made.
 
 ## 6. Android wrapper
 
@@ -29,3 +29,6 @@ Generated the Capacitor Android project and added permission-aware native recogn
 Added ten later beta lexicons, partial catalogs, script fonts, RTL and honest fallback labels; ten other scheduled languages remain planned/disabled. Added production Compose/Caddy, initial SQL schema, environment templates, deployment workflow, demo script and architecture diagram. Dependency scans pass for the installed application/development set. Source packaging excludes runtime data and credentials.
 
 The implementation was integrated and tested across phase boundaries because UI, v2 API, catalogs and native assets depend on each other. Git contains the original audit plus integrated feature/release commits; it does not claim seven independently tested historical phase releases. See VERIFICATION.md for the exact local evidence and remaining external checks.
+
+### 2.0.1 account recovery and lifecycle follow-up
+Emailed password-reset codes, expiry/attempt/rate limits and revocation are implemented. Dialog status and stale session creation/wake-lock callbacks are guarded. Recovery messages are translated for English/Hindi/Telugu, with the existing honest fallback for partial beta catalogs.

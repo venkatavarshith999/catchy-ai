@@ -7,6 +7,7 @@ Mutations require `Origin: <APP_ORIGIN>` and `X-Catchy-Request: 1`; authenticate
 | Method | Path under `/api/v2` | Purpose |
 | --- | --- | --- |
 | POST | `/auth/register`, `/auth/login` | Email/password account and session |
+| POST | `/password/request`, `/password/confirm` | Expiring email-code recovery and session revocation |
 | GET | `/me` | Current user and preferences |
 | POST | `/logout` | Invalidate current session |
 | POST | `/verify/request`, `/verify/confirm` | Verified email ownership, rate-limited expiring codes |

@@ -1,4 +1,4 @@
-# Catchy AI · Product beta
+# Catchy AI · Product beta 2.0.1
 
 A multilingual conversation-safety companion for older adults and their families. Catchy identifies suspicious **requests and pressure tactics**, shows an understandable warning, and helps the user reach someone they trust.
 
@@ -32,7 +32,7 @@ Choose English, Hindi or Telugu. Select **Try a safe demo → Scam simulation**,
 
 Create an account to save metadata and manage the trusted circle. Redacted transcript retention is off by default. To test accepted invitations locally without SMTP, set `DEV_EMAIL_CODES=1` before launch; the verification UI will display development codes. This option is rejected in production. Invite a second account, copy the link, and let that person verify their email and accept it. A contact relationship is not active until accepted.
 
-Email verification uses configured SMTP. Optional metadata alerts use the documented HTTPS webhook or SMTP. No paid account, model key, real email, or message delivery is required for typed analysis and simulations. The app explicitly reports unavailable delivery services.
+Email verification and **Forgot password?** recovery use configured SMTP. Reset codes expire after 10 minutes and a completed reset signs out all devices. Optional metadata alerts use the documented HTTPS webhook or SMTP. No paid account, model key, real email, or message delivery is required for typed analysis and simulations. The app explicitly reports unavailable delivery services.
 
 ## Included
 
@@ -40,7 +40,7 @@ Email verification uses configured SMTP. Optional metadata alerts use the docume
 | --- | --- |
 | Phone experience | Large controls, consent, simple risk states, two-action danger screen, spoken warning fallback, haptics, wake lock, explicit failure states |
 | Family workspace | Session filters, evidence timeline when retained, metadata export, deletion, trusted circle, preferences |
-| Accounts | Email/password sessions, email verification, user/contact/admin roles, ownership checks, account deletion |
+| Accounts | Email/password sessions, email verification, password recovery, user/contact/admin roles, ownership checks, account deletion |
 | Detection | Shared rules with native-script and romanized lexicons; optional bounded Ollama refinement; action-request gating and one warning per call |
 | Speech | Browser recognition, Android speech bridge, optional self-hosted Whisper WebSocket worker |
 | Privacy | No application raw-audio storage, redaction before model requests, opt-in transcript retention, expiring live memory, content-free event logging |

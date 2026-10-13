@@ -58,6 +58,7 @@ const shell = [
   "/fonts.css",
   "/native.js",
   "/product.js",
+  "/lifecycle.js",
   "/i18n.js",
   "/asr.js",
   "/manifest.webmanifest",

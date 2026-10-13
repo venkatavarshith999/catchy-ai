@@ -17,6 +17,8 @@ HEADERS = {"Origin": ORIGIN, "X-Catchy-Request": "1"}
 def app(tmp_path, monkeypatch):
     monkeypatch.setenv("APP_ORIGIN", ORIGIN)
     monkeypatch.setenv("DEV_EMAIL_CODES", "1")
+    for name in ["SMTP_HOST", "SMTP_FROM", "ALERT_WEBHOOK_URL", "ERROR_WEBHOOK_URL"]:
+        monkeypatch.setenv(name, "")
     monkeypatch.setenv("LLM_PROVIDER", "rules")
     monkeypatch.delenv("REDIS_URL", raising=False)
     return create_app("sqlite:///" + str(tmp_path / "product.db"), redis_url="")
@@ -430,3 +432,129 @@ def test_release_package_excludes_runtime_and_secrets():
         "android/gradle/wrapper/gradle-wrapper.jar",
     ]:
         assert included(Path(name)), name
+
+
+def reset_request(client, email="one@example.test"):
+    response = client.post("/api/v2/password/request", json={"email": email})
+    assert response.status_code == 200, response.text
+    return response.json()
+
+
+def test_password_reset_revokes_sessions_and_active_context(app, client):
+    register(client)
+    second = TestClient(app, headers=HEADERS)
+    second.post(
+        "/api/v2/auth/login", json={"email": "one@example.test", "password": "sample-password-123"}
+    )
+    cid = new_call(client)
+    code = reset_request(client)["development_code"]
+    response = second.post(
+        "/api/v2/password/confirm",
+        json={"email": "one@example.test", "code": code, "password": "new-password-456"},
+    )
+    assert response.status_code == 200
+    assert client.get("/api/v2/me").status_code == 401
+    assert second.get("/api/v2/me").status_code == 401
+    assert app.state.live.get("call:" + cid) is None
+    with app.state.Session() as db:
+        assert db.get(Call, cid).status == "completed"
+        assert db.scalar(select(func.count()).select_from(Login)) == 0
+    assert (
+        client.post(
+            "/api/v2/password/confirm",
+            json={"email": "one@example.test", "code": code, "password": "another-password-789"},
+        ).status_code
+        == 400
+    )
+    assert (
+        client.post(
+            "/api/v2/auth/login",
+            json={"email": "one@example.test", "password": "sample-password-123"},
+        ).status_code
+        == 401
+    )
+    assert (
+        client.post(
+            "/api/v2/auth/login", json={"email": "one@example.test", "password": "new-password-456"}
+        ).status_code
+        == 200
+    )
+
+
+def test_reset_absent_account_has_same_response_shape(client, monkeypatch):
+    register(client)
+    monkeypatch.setenv("DEV_EMAIL_CODES", "0")
+    monkeypatch.setattr("backend.product.send_mail", lambda *args: False)
+    monkeypatch.setattr("backend.product.mail_available", lambda: False)
+    known = reset_request(client)
+    unknown = reset_request(client, "absent@example.test")
+    assert known == unknown == {"accepted": True, "email_configured": False}
+
+
+def test_reset_wrong_expired_and_attempt_limited(app, client):
+    from backend.product import digest
+
+    register(client)
+    code = reset_request(client)["development_code"]
+    key = "reset:" + digest("one@example.test")
+    expires = app.state.live.get(key)["expires"]
+    wrong = "000000" if code != "000000" else "111111"
+    for _ in range(5):
+        assert (
+            client.post(
+                "/api/v2/password/confirm",
+                json={"email": "one@example.test", "code": wrong, "password": "new-password-456"},
+            ).status_code
+            == 400
+        )
+    assert app.state.live.get(key)["expires"] == expires
+    assert (
+        client.post(
+            "/api/v2/password/confirm",
+            json={"email": "one@example.test", "code": code, "password": "new-password-456"},
+        ).status_code
+        == 400
+    )
+    code = reset_request(client)["development_code"]
+    record = app.state.live.get(key)
+    record["expires"] = 1
+    app.state.live.set(key, record)
+    assert (
+        client.post(
+            "/api/v2/password/confirm",
+            json={"email": "one@example.test", "code": code, "password": "new-password-456"},
+        ).status_code
+        == 400
+    )
+
+
+def test_reset_deletion_clears_challenge_and_cannot_reset_recreated_account(app, client):
+    from backend.product import digest
+
+    register(client)
+    code = reset_request(client)["development_code"]
+    assert client.delete("/api/v2/account").status_code == 200
+    assert app.state.live.get("reset:" + digest("one@example.test")) is None
+    register(client)
+    assert (
+        client.post(
+            "/api/v2/password/confirm",
+            json={"email": "one@example.test", "code": code, "password": "new-password-456"},
+        ).status_code
+        == 400
+    )
+
+
+def test_reset_request_rate_limit_and_invalid_input(client):
+    register(client)
+    for _ in range(3):
+        reset_request(client)
+    assert (
+        client.post("/api/v2/password/request", json={"email": "one@example.test"}).status_code
+        == 429
+    )
+    response = client.post(
+        "/api/v2/password/confirm",
+        json={"email": "one@example.test", "code": "123456", "password": "short"},
+    )
+    assert response.status_code == 422 and "short" not in response.text
