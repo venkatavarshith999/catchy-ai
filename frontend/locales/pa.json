@@ -183,9 +183,10 @@
   "forgotPassword": "Forgot password?",
   "resetPassword": "Reset password",
   "resetHelp": "Enter your account email to request a password reset code.",
-  "resetRequested": "If an account matches and email delivery is configured, a code will arrive. It expires in 10 minutes.",
+  "resetRequested": "If an account matches, we will attempt to send a code. It expires in 10 minutes.",
   "newPassword": "New password (at least 10 characters)",
   "resetInvalid": "This code is incorrect, expired or already used. Request a new code if needed.",
   "resetSuccess": "Password changed. Sign in again with your new password.",
-  "tooManyRequests": "Too many attempts. Wait a few minutes and try again."
+  "tooManyRequests": "Too many attempts. Wait a few minutes and try again.",
+  "emailUnavailable": "Email delivery is not configured. Ask the service administrator for help."
 }

@@ -89,7 +89,7 @@ const errors = {
   rate_limited: "tooManyRequests",
   verify_email_required: "verificationNeeded",
   delivery_not_configured: "providerUnavailable",
-  email_not_configured: "providerUnavailable",
+  email_not_configured: "emailUnavailable",
   alert_cooldown: "cooldown",
   invalid_invitation: "inviteInvalid",
   admin_required: "adminOnly",
@@ -876,7 +876,7 @@ document.addEventListener("submit", async (event) => {
       const result = await api("/password/request", "POST", values);
       resetForm(values.email, true, result.development_code);
       if (!result.email_configured && !result.development_code)
-        notice("providerUnavailable");
+        notice("emailUnavailable");
     }
     if (form.id === "reset-confirm-form") {
       await api("/password/confirm", "POST", values);
