@@ -1,0 +1,202 @@
+[
+  {
+    "id": "or-scam-01",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ବ୍ୟାଙ୍କ",
+      "ତୁରନ୍ତ",
+      "ଓଟିପି କୁହନ୍ତୁ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "or-genuine-01",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ବ୍ୟାଙ୍କ. ଓଟିପି କୁହନ୍ତୁ ନାହିଁ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "or-scam-02",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ପୋଲିସ",
+      "ବର୍ତ୍ତମାନ",
+      "ପିନ୍ ପଠାନ୍ତୁ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "or-genuine-02",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ପୋଲିସ. ପିନ୍ ପଠାନ୍ତୁ ନାହିଁ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "or-scam-03",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ବ୍ୟାଙ୍କ",
+      "ତୁରନ୍ତ",
+      "ପାସୱାର୍ଡ ଇନଷ୍ଟଲ୍ କରନ୍ତୁ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "or-genuine-03",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ବ୍ୟାଙ୍କ. ପାସୱାର୍ଡ kuhantu nahin"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "or-scam-04",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ପୋଲିସ",
+      "ବର୍ତ୍ତମାନ",
+      "କୋଡ୍ କୁହନ୍ତୁ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "or-genuine-04",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ପୋଲିସ. କୋଡ୍ କୁହନ୍ତୁ ନାହିଁ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "or-scam-05",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ବ୍ୟାଙ୍କ",
+      "ତୁରନ୍ତ",
+      "ଓଟିପି ପଠାନ୍ତୁ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "or-genuine-05",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ବ୍ୟାଙ୍କ. ଓଟିପି ପଠାନ୍ତୁ ନାହିଁ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "or-scam-06",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ପୋଲିସ",
+      "ବର୍ତ୍ତମାନ",
+      "ପିନ୍ ଇନଷ୍ଟଲ୍ କରନ୍ତୁ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "or-genuine-06",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ପୋଲିସ. ପିନ୍ kuhantu nahin"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "or-scam-07",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ବ୍ୟାଙ୍କ",
+      "ତୁରନ୍ତ",
+      "ପାସୱାର୍ଡ କୁହନ୍ତୁ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "or-genuine-07",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ବ୍ୟାଙ୍କ. ପାସୱାର୍ଡ କୁହନ୍ତୁ ନାହିଁ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "or-scam-08",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ପୋଲିସ",
+      "ବର୍ତ୍ତମାନ",
+      "କୋଡ୍ ପଠାନ୍ତୁ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "or-genuine-08",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ପୋଲିସ. କୋଡ୍ ପଠାନ୍ତୁ ନାହିଁ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "or-scam-09",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ବ୍ୟାଙ୍କ",
+      "ତୁରନ୍ତ",
+      "ଓଟିପି ଇନଷ୍ଟଲ୍ କରନ୍ତୁ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "or-genuine-09",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ବ୍ୟାଙ୍କ. ଓଟିପି kuhantu nahin"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "or-scam-10",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ପୋଲିସ",
+      "ବର୍ତ୍ତମାନ",
+      "ପିନ୍ କୁହନ୍ତୁ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "or-genuine-10",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ପୋଲିସ. ପିନ୍ କୁହନ୍ତୁ ନାହିଁ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  }
+]

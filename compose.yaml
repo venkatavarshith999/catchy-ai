@@ -1,21 +1,55 @@
 services:
   app:
     build: .
-    ports:
-      - "127.0.0.1:8000:8000"
+    ports: ["127.0.0.1:8000:8000"]
     environment:
       APP_ORIGIN: http://localhost:8000
+      APP_ENV: development
+      DATABASE_URL: postgresql+psycopg://catchy:${POSTGRES_PASSWORD:-catchy-local-only}@database:5432/catchy
+      REDIS_URL: redis://cache:6379/0
       LLM_PROVIDER: ${LLM_PROVIDER:-rules}
       OLLAMA_URL: ${OLLAMA_URL:-http://host.docker.internal:11434}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - catchy_data:/app/data
-    restart: unless-stopped
+      ASR_WS_URL: ${ASR_WS_URL:-}
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-}
+      DEV_EMAIL_CODES: ${DEV_EMAIL_CODES:-0}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      ALERT_WEBHOOK_URL: ${ALERT_WEBHOOK_URL:-}
+      ALERT_WEBHOOK_TOKEN: ${ALERT_WEBHOOK_TOKEN:-}
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    depends_on:
+      database:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
     read_only: true
     tmpfs: [/tmp]
     cap_drop: [ALL]
     security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: catchy
+      POSTGRES_USER: catchy
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-catchy-local-only}
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U catchy -d catchy"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  cache:
+    image: redis:8-alpine
+    command: [redis-server, --save, "", --appendonly, "no"]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 volumes:
-  catchy_data:
+  postgres_data:

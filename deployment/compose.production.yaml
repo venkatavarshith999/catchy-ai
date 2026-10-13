@@ -1,22 +1,61 @@
 services:
   app:
-    image: ${CATCHY_IMAGE:?Set CATCHY_IMAGE to the published immutable image tag}
+    image: ${CATCHY_IMAGE:?Set CATCHY_IMAGE to an immutable release tag}
     environment:
+      APP_ENV: production
       APP_ORIGIN: https://${DOMAIN:?Set DOMAIN}
-      COOKIE_SECURE: "1"
-      LLM_PROVIDER: rules
-    volumes:
-      - catchy_data:/app/data
-    restart: unless-stopped
+      DATABASE_URL: postgresql+psycopg://catchy:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@database:5432/catchy
+      REDIS_URL: redis://:${REDIS_PASSWORD:?Set REDIS_PASSWORD}@cache:6379/0
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      ALERT_WEBHOOK_URL: ${ALERT_WEBHOOK_URL:-}
+      ALERT_WEBHOOK_TOKEN: ${ALERT_WEBHOOK_TOKEN:-}
+      LLM_PROVIDER: ${LLM_PROVIDER:-rules}
+      OLLAMA_URL: ${OLLAMA_URL:-http://ollama:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
+      ASR_WS_URL: ${ASR_WS_URL:-}
+      ASR_SERVICE_TOKEN: ${ASR_SERVICE_TOKEN:-}
+      ERROR_WEBHOOK_URL: ${ERROR_WEBHOOK_URL:-}
+      ERROR_WEBHOOK_TOKEN: ${ERROR_WEBHOOK_TOKEN:-}
+      METRICS_TOKEN: ${METRICS_TOKEN:?Set METRICS_TOKEN}
     read_only: true
     tmpfs: [/tmp]
     cap_drop: [ALL]
     security_opt: [no-new-privileges:true]
-    deploy:
-      resources:
-        limits:
-          cpus: "2"
-          memory: 512M
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: catchy
+      POSTGRES_USER: catchy
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U catchy -d catchy"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  cache:
+    image: redis:8-alpine
+    command: [redis-server, --requirepass, "${REDIS_PASSWORD}", --save, "", --appendonly, "no"]
+    environment:
+      REDISCLI_AUTH: ${REDIS_PASSWORD}
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 3s
+      retries: 10
   proxy:
     image: caddy:2-alpine
     ports: ["80:80", "443:443"]
@@ -31,6 +70,6 @@ services:
         condition: service_healthy
     restart: unless-stopped
 volumes:
-  catchy_data:
+  postgres_data:
   caddy_data:
   caddy_config:

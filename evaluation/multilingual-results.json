@@ -1,0 +1,1828 @@
+{
+  "generated_at": "2026-10-13T04:40:57Z",
+  "dataset": "synthetic-development",
+  "field_validated": false,
+  "audio_end_to_end_ms": null,
+  "languages": [
+    {
+      "language": "as",
+      "status": "beta",
+      "dataset_kind": "lexicon-derived-smoke",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "p50_ms": 3.118,
+      "p95_ms": 4.987,
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "results": [
+        {
+          "id": "as-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "as-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "as-scam-02",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "as-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "as-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "as-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "as-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "as-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "as-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "as-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "as-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "as-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "as-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "as-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "as-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "as-genuine-08",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "as-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "as-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "as-scam-10",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "as-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    },
+    {
+      "language": "bn",
+      "status": "beta",
+      "dataset_kind": "lexicon-derived-smoke",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "p50_ms": 3.35,
+      "p95_ms": 4.855,
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "results": [
+        {
+          "id": "bn-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "bn-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "bn-scam-02",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "bn-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "bn-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "bn-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "bn-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "bn-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "bn-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "bn-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "bn-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "bn-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "bn-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "bn-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "bn-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "bn-genuine-08",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "bn-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "bn-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "bn-scam-10",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "bn-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "status": "beta",
+      "dataset_kind": "authored-synthetic",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 0.9,
+      "f1": 0.9473684210526316,
+      "p50_ms": 2.493,
+      "p95_ms": 3.851,
+      "tp": 9,
+      "fp": 0,
+      "fn": 1,
+      "tn": 10,
+      "results": [
+        {
+          "id": "en-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "en-scam-02",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "en-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "en-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "en-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "en-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "en-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "en-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "en-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "en-scam-10",
+          "expected": "high",
+          "predicted": "low",
+          "match": false
+        },
+        {
+          "id": "en-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "en-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "en-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "en-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "en-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "en-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "en-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "en-genuine-08",
+          "expected": "not_high",
+          "predicted": "caution",
+          "match": true
+        },
+        {
+          "id": "en-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "en-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    },
+    {
+      "language": "gu",
+      "status": "beta",
+      "dataset_kind": "lexicon-derived-smoke",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.888888888888889,
+      "p50_ms": 3.158,
+      "p95_ms": 5.388,
+      "tp": 8,
+      "fp": 0,
+      "fn": 2,
+      "tn": 10,
+      "results": [
+        {
+          "id": "gu-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "gu-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "gu-scam-02",
+          "expected": "high",
+          "predicted": "low",
+          "match": false
+        },
+        {
+          "id": "gu-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "gu-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "gu-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "gu-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "gu-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "gu-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "gu-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "gu-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "gu-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "gu-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "gu-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "gu-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "gu-genuine-08",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "gu-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "gu-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "gu-scam-10",
+          "expected": "high",
+          "predicted": "low",
+          "match": false
+        },
+        {
+          "id": "gu-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    },
+    {
+      "language": "hi",
+      "status": "beta",
+      "dataset_kind": "authored-synthetic",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "p50_ms": 3.845,
+      "p95_ms": 7.143,
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "results": [
+        {
+          "id": "hi-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "hi-scam-02",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "hi-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "hi-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "hi-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "hi-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "hi-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "hi-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "hi-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "hi-scam-10",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "hi-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "hi-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "hi-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "hi-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "hi-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "hi-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "hi-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "hi-genuine-08",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "hi-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "hi-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    },
+    {
+      "language": "kn",
+      "status": "beta",
+      "dataset_kind": "lexicon-derived-smoke",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "p50_ms": 3.299,
+      "p95_ms": 5.224,
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "results": [
+        {
+          "id": "kn-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "kn-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "kn-scam-02",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "kn-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "kn-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "kn-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "kn-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "kn-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "kn-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "kn-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "kn-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "kn-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "kn-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "kn-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "kn-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "kn-genuine-08",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "kn-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "kn-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "kn-scam-10",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "kn-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    },
+    {
+      "language": "ml",
+      "status": "beta",
+      "dataset_kind": "lexicon-derived-smoke",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "p50_ms": 3.314,
+      "p95_ms": 5.586,
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "results": [
+        {
+          "id": "ml-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ml-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ml-scam-02",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ml-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ml-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ml-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ml-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ml-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ml-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ml-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ml-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ml-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ml-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ml-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ml-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ml-genuine-08",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ml-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ml-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ml-scam-10",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ml-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    },
+    {
+      "language": "mr",
+      "status": "beta",
+      "dataset_kind": "lexicon-derived-smoke",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "p50_ms": 3.68,
+      "p95_ms": 5.454,
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "results": [
+        {
+          "id": "mr-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "mr-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "mr-scam-02",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "mr-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "mr-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "mr-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "mr-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "mr-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "mr-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "mr-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "mr-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "mr-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "mr-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "mr-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "mr-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "mr-genuine-08",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "mr-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "mr-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "mr-scam-10",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "mr-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    },
+    {
+      "language": "or",
+      "status": "beta",
+      "dataset_kind": "lexicon-derived-smoke",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "p50_ms": 3.443,
+      "p95_ms": 5.553,
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "results": [
+        {
+          "id": "or-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "or-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "or-scam-02",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "or-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "or-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "or-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "or-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "or-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "or-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "or-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "or-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "or-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "or-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "or-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "or-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "or-genuine-08",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "or-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "or-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "or-scam-10",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "or-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    },
+    {
+      "language": "pa",
+      "status": "beta",
+      "dataset_kind": "lexicon-derived-smoke",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "p50_ms": 3.283,
+      "p95_ms": 4.125,
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "results": [
+        {
+          "id": "pa-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "pa-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "pa-scam-02",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "pa-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "pa-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "pa-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "pa-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "pa-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "pa-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "pa-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "pa-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "pa-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "pa-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "pa-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "pa-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "pa-genuine-08",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "pa-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "pa-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "pa-scam-10",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "pa-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    },
+    {
+      "language": "ta",
+      "status": "beta",
+      "dataset_kind": "lexicon-derived-smoke",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "p50_ms": 3.921,
+      "p95_ms": 4.921,
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "results": [
+        {
+          "id": "ta-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ta-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ta-scam-02",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ta-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ta-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ta-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ta-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ta-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ta-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ta-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ta-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ta-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ta-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ta-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ta-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ta-genuine-08",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ta-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ta-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ta-scam-10",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ta-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    },
+    {
+      "language": "te",
+      "status": "beta",
+      "dataset_kind": "authored-synthetic",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "p50_ms": 3.967,
+      "p95_ms": 8.323,
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "results": [
+        {
+          "id": "te-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "te-scam-02",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "te-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "te-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "te-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "te-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "te-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "te-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "te-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "te-scam-10",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "te-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "te-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "te-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "te-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "te-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "te-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "te-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "te-genuine-08",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "te-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "te-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    },
+    {
+      "language": "ur",
+      "status": "beta",
+      "dataset_kind": "lexicon-derived-smoke",
+      "independent_holdout": false,
+      "cases": 20,
+      "scam_cases": 10,
+      "genuine_cases": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "p50_ms": 3.31,
+      "p95_ms": 6.297,
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "results": [
+        {
+          "id": "ur-scam-01",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ur-genuine-01",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ur-scam-02",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ur-genuine-02",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ur-scam-03",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ur-genuine-03",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ur-scam-04",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ur-genuine-04",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ur-scam-05",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ur-genuine-05",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ur-scam-06",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ur-genuine-06",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ur-scam-07",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ur-genuine-07",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ur-scam-08",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ur-genuine-08",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ur-scam-09",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ur-genuine-09",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        },
+        {
+          "id": "ur-scam-10",
+          "expected": "high",
+          "predicted": "high",
+          "match": true
+        },
+        {
+          "id": "ur-genuine-10",
+          "expected": "not_high",
+          "predicted": "low",
+          "match": true
+        }
+      ]
+    }
+  ]
+}

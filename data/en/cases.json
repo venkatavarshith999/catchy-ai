@@ -1,0 +1,188 @@
+[
+  {
+    "id": "en-scam-01",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "Please read your OTP to me."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-scam-02",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "Tell me your PIN immediately."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-scam-03",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "Please give me your account password."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-scam-04",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "I am from your bank.",
+      "Your account is frozen.",
+      "Transfer your money to our safe account immediately."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-scam-05",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "Technical support here.",
+      "Please install AnyDesk and allow remote access."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-scam-06",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "Police investigation.",
+      "You face arrest right now.",
+      "Send money to the safe account."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-scam-07",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "Keep this secret from your family.",
+      "Read the six-digit verification code to me."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-scam-08",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "Never share your OTP. But read the verification code to me."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-scam-09",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "Download TeamViewer and give me remote access."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-scam-10",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "To preserve your balance, relocate your savings to the destination I dictate."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-genuine-01",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "Your hospital appointment is today. Please arrive on time."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-genuine-02",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "This is your bank. Never share your OTP."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-genuine-03",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "Your delivery is at the gate. Please collect it."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-genuine-04",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "Hello grandma, shall we meet for lunch?"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-genuine-05",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "I am a police officer. Please contact our published office number."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-genuine-06",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "This is urgent: your hospital appointment has changed."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-genuine-07",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "Do not install remote access software for a stranger."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-genuine-08",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "Never transfer money to a safe account on a caller request."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-genuine-09",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "The caller yesterday said read your OTP to me. I reported it."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "en-genuine-10",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "Your bank statement is available in the official app."
+    ],
+    "source": "authored synthetic development example"
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "appId": "com.catchyai.safety",
+  "appName": "Catchy AI",
+  "webDir": "mobile/web",
+  "android": { "allowMixedContent": false },
+  "server": { "androidScheme": "https" }
+}

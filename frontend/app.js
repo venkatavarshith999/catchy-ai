@@ -190,7 +190,9 @@ function renderOverview() {
   $("#page").innerHTML =
     heading(
       "A LITTLE CLARITY. A LOT MORE PEACE OF MIND.",
-      `Good to have you here, ${state.user ? esc(state.user.name.split(" ")[0]) : "there"}.`,
+      state.user
+        ? `Good to have you here, ${esc(state.user.name.split(" ")[0])}.`
+        : "Welcome to Catchy.",
       "Your space for safer conversations and the people who matter.",
       `<span class="date-tag">◷ &nbsp; ${new Date().toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric", year: "numeric" })}</span>`,
     ) +

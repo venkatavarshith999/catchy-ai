@@ -1,0 +1,202 @@
+[
+  {
+    "id": "kn-scam-01",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ಬ್ಯಾಂಕ್",
+      "ತಕ್ಷಣ",
+      "ಒಟಿಪಿ ಹೇಳಿ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "kn-genuine-01",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ಬ್ಯಾಂಕ್. ಒಟಿಪಿ ಹೇಳಬೇಡಿ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "kn-scam-02",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ಪೊಲೀಸ್",
+      "ಈಗಲೇ",
+      "ಪಿನ್ ಕಳುಹಿಸಿ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "kn-genuine-02",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ಪೊಲೀಸ್. ಪಿನ್ ಹಂಚಬೇಡಿ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "kn-scam-03",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ಬ್ಯಾಂಕ್",
+      "ತಕ್ಷಣ",
+      "ಪಾಸ್‌ವರ್ಡ್ ಸ್ಥಾಪಿಸಿ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "kn-genuine-03",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ಬ್ಯಾಂಕ್. ಪಾಸ್‌ವರ್ಡ್ ಕಳುಹಿಸಬೇಡಿ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "kn-scam-04",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ಪೊಲೀಸ್",
+      "ಈಗಲೇ",
+      "ಕೋಡ್ ಹೇಳಿ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "kn-genuine-04",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ಪೊಲೀಸ್. ಕೋಡ್ helabedi"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "kn-scam-05",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ಬ್ಯಾಂಕ್",
+      "ತಕ್ಷಣ",
+      "ಒಟಿಪಿ ಕಳುಹಿಸಿ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "kn-genuine-05",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ಬ್ಯಾಂಕ್. ಒಟಿಪಿ ಹೇಳಬೇಡಿ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "kn-scam-06",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ಪೊಲೀಸ್",
+      "ಈಗಲೇ",
+      "ಪಿನ್ ಸ್ಥಾಪಿಸಿ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "kn-genuine-06",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ಪೊಲೀಸ್. ಪಿನ್ ಹಂಚಬೇಡಿ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "kn-scam-07",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ಬ್ಯಾಂಕ್",
+      "ತಕ್ಷಣ",
+      "ಪಾಸ್‌ವರ್ಡ್ ಹೇಳಿ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "kn-genuine-07",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ಬ್ಯಾಂಕ್. ಪಾಸ್‌ವರ್ಡ್ ಕಳುಹಿಸಬೇಡಿ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "kn-scam-08",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ಪೊಲೀಸ್",
+      "ಈಗಲೇ",
+      "ಕೋಡ್ ಕಳುಹಿಸಿ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "kn-genuine-08",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ಪೊಲೀಸ್. ಕೋಡ್ helabedi"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "kn-scam-09",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ಬ್ಯಾಂಕ್",
+      "ತಕ್ಷಣ",
+      "ಒಟಿಪಿ ಸ್ಥಾಪಿಸಿ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "kn-genuine-09",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ಬ್ಯಾಂಕ್. ಒಟಿಪಿ ಹೇಳಬೇಡಿ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "kn-scam-10",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ಪೊಲೀಸ್",
+      "ಈಗಲೇ",
+      "ಪಿನ್ ಹೇಳಿ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "kn-genuine-10",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ಪೊಲೀಸ್. ಪಿನ್ ಹಂಚಬೇಡಿ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  }
+]

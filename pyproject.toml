@@ -1,0 +1,10 @@
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+include = ["backend/product.py", "backend/product_store.py", "backend/detection.py", "backend/notifications.py", "backend/observability.py", "backend/asr_service.py", "backend/launcher.py", "llms/product.py", "evaluation/multilingual.py", "tests/test_product.py", "tests/test_release.py", "tests/test_services.py", "scripts/package.py", "scripts/smoke.py"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

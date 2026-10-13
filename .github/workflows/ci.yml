@@ -1,61 +1,94 @@
 name: Verify and package
 on:
   push:
-    branches: [main]
   pull_request:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  test:
+  verify:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: catchy
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: catchy_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U catchy -d catchy_test"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+      redis:
+        image: redis:8-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 3s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Source formatting
+          cache: npm
+      - name: Install dependencies
         run: |
-          npm ci --ignore-scripts --no-audit --no-fund
+          python -m pip install -r requirements-dev.txt
+          npm ci --no-audit --no-fund
+      - name: Formatting, lint and JavaScript regressions
+        run: |
+          python -m ruff check .
+          python -m ruff format --check .
           npm run format:check
-      - name: Python syntax and API/security regressions
+          npm run check
+      - name: Product, legacy and PostgreSQL/Redis integration tests
+        env:
+          TEST_DATABASE_URL: postgresql+psycopg://catchy:ci-only-password@127.0.0.1:5432/catchy_test
+          TEST_REDIS_URL: redis://127.0.0.1:6379/15
+        run: python -m pytest -q
+      - name: Dependency vulnerability scans
         run: |
-          python -m compileall -q backend llms
-          python -m unittest discover -s tests -v
-      - name: JavaScript syntax and guest detector
+          python -m pip_audit -r requirements.txt
+          npm audit --audit-level=moderate
+      - name: Build public and native assets
         run: |
-          node --check frontend/app.js
-          node tests/test_frontend.cjs
-      - name: Synthetic evaluation report
-        run: python -m evaluation.run
-      - name: Container health smoke test
+          npm run build
+          npx cap sync android
+      - name: Synthetic evaluation and measured HTTP smoke benchmark
+        run: |
+          python -m evaluation.multilingual
+          python scripts/smoke.py
+      - name: Container health smoke
         run: |
           docker build -t catchy:test .
           docker run -d --name catchy-test -p 127.0.0.1:8000:8000 catchy:test
-          for attempt in $(seq 1 15); do
+          for attempt in $(seq 1 20); do
             if curl --fail http://127.0.0.1:8000/api/health; then exit 0; fi
             sleep 2
           done
           docker logs catchy-test
           exit 1
-      - name: Stop test container
+      - name: Stop smoke container
         if: always()
         run: docker rm -f catchy-test || true
-      - name: Package sources
+      - name: Package source
         run: python scripts/package.py
       - uses: actions/upload-artifact@v4
         with:
-          name: catchy-ai-source
+          name: catchy-ai-product
           path: artifacts/catchy-ai.zip
       - uses: actions/upload-artifact@v4
         with:
-          name: synthetic-evaluation
-          path: evaluation/results.json
+          name: measured-evaluation
+          path: |
+            evaluation/multilingual-results.json
+            evaluation/http-benchmark.json
   publish-image:
-    needs: test
+    needs: verify
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:

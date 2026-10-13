@@ -1,0 +1,99 @@
+{
+  "signals": {
+    "authority": [
+      "बैंक",
+      "पुलिस",
+      "अधिकारी",
+      "सरकार",
+      "bank se",
+      "police se"
+    ],
+    "urgency": [
+      "तुरंत",
+      "अभी",
+      "जल्दी",
+      "turant",
+      "abhi",
+      "jaldi"
+    ],
+    "fear": [
+      "गिरफ्तार",
+      "बंद हो",
+      "ब्लॉक",
+      "मुकदमा",
+      "giraftar",
+      "band ho",
+      "block ho"
+    ],
+    "secrecy": [
+      "किसी को मत बताना",
+      "परिवार को मत",
+      "गुप्त",
+      "kisi ko mat batana",
+      "parivar ko mat"
+    ],
+    "credential": [
+      "ओटीपी",
+      "पिन",
+      "पासवर्ड",
+      "कोड",
+      "otp",
+      "pin",
+      "password",
+      "code"
+    ],
+    "payment": [
+      "पैसे",
+      "भुगतान",
+      "सुरक्षित खाते",
+      "रुपये",
+      "paise",
+      "bhugtan",
+      "surakshit khate"
+    ],
+    "remote": [
+      "ऐप",
+      "स्क्रीन",
+      "रिमोट",
+      "anydesk",
+      "app install",
+      "screen share"
+    ]
+  },
+  "ask": [
+    "बताएं",
+    "बताओ",
+    "भेजें",
+    "भेजो",
+    "पढ़ें",
+    "बोलें",
+    "डालें",
+    "करें",
+    "करो",
+    "batao",
+    "bataye",
+    "bhejo",
+    "bheje",
+    "padho",
+    "karo",
+    "kare",
+    "do"
+  ],
+  "protective": [
+    "कभी न बताएं",
+    "मत बताएं",
+    "साझा न करें",
+    "कभी शेयर न",
+    "मत भेजें",
+    "मत दें",
+    "kabhi mat",
+    "share mat",
+    "mat bhejo",
+    "mat batao",
+    "नहीं मांगते"
+  ],
+  "reported": [
+    "धोखेबाज ने कहा था",
+    "scammer ne kaha tha"
+  ]
+}

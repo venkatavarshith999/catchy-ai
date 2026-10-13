@@ -1,0 +1,206 @@
+[
+  {
+    "code": "en",
+    "name": "English",
+    "speech": "en-IN",
+    "status": "beta",
+    "direction": "ltr",
+    "ui": "en"
+  },
+  {
+    "code": "hi",
+    "name": "हिन्दी",
+    "speech": "hi-IN",
+    "status": "beta",
+    "direction": "ltr",
+    "ui": "hi"
+  },
+  {
+    "code": "te",
+    "name": "తెలుగు",
+    "speech": "te-IN",
+    "status": "beta",
+    "direction": "ltr",
+    "ui": "te"
+  },
+  {
+    "code": "ta",
+    "name": "தமிழ்",
+    "speech": "ta-IN",
+    "status": "beta",
+    "direction": "ltr",
+    "ui": "ta",
+    "translation": "partial",
+    "dataset": "templated-smoke"
+  },
+  {
+    "code": "kn",
+    "name": "ಕನ್ನಡ",
+    "speech": "kn-IN",
+    "status": "beta",
+    "direction": "ltr",
+    "ui": "kn",
+    "translation": "partial",
+    "dataset": "templated-smoke"
+  },
+  {
+    "code": "ml",
+    "name": "മലയാളം",
+    "speech": "ml-IN",
+    "status": "beta",
+    "direction": "ltr",
+    "ui": "ml",
+    "translation": "partial",
+    "dataset": "templated-smoke"
+  },
+  {
+    "code": "mr",
+    "name": "मराठी",
+    "speech": "mr-IN",
+    "status": "beta",
+    "direction": "ltr",
+    "ui": "mr",
+    "translation": "partial",
+    "dataset": "templated-smoke"
+  },
+  {
+    "code": "bn",
+    "name": "বাংলা",
+    "speech": "bn-IN",
+    "status": "beta",
+    "direction": "ltr",
+    "ui": "bn",
+    "translation": "partial",
+    "dataset": "templated-smoke"
+  },
+  {
+    "code": "gu",
+    "name": "ગુજરાતી",
+    "speech": "gu-IN",
+    "status": "beta",
+    "direction": "ltr",
+    "ui": "gu",
+    "translation": "partial",
+    "dataset": "templated-smoke"
+  },
+  {
+    "code": "pa",
+    "name": "ਪੰਜਾਬੀ",
+    "speech": "pa-IN",
+    "status": "beta",
+    "direction": "ltr",
+    "ui": "pa",
+    "translation": "partial",
+    "dataset": "templated-smoke"
+  },
+  {
+    "code": "or",
+    "name": "ଓଡ଼ିଆ",
+    "speech": "or-IN",
+    "status": "beta",
+    "direction": "ltr",
+    "ui": "or",
+    "translation": "partial",
+    "dataset": "templated-smoke"
+  },
+  {
+    "code": "ur",
+    "name": "اردو",
+    "speech": "ur-IN",
+    "status": "beta",
+    "direction": "rtl",
+    "ui": "ur",
+    "translation": "partial",
+    "dataset": "templated-smoke"
+  },
+  {
+    "code": "as",
+    "name": "অসমীয়া",
+    "speech": "as-IN",
+    "status": "beta",
+    "direction": "ltr",
+    "ui": "as",
+    "translation": "partial",
+    "dataset": "templated-smoke"
+  },
+  {
+    "code": "brx",
+    "name": "बड़ो",
+    "speech": "brx-IN",
+    "status": "planned",
+    "direction": "ltr",
+    "ui": "en"
+  },
+  {
+    "code": "doi",
+    "name": "डोगरी",
+    "speech": "doi-IN",
+    "status": "planned",
+    "direction": "ltr",
+    "ui": "en"
+  },
+  {
+    "code": "ks",
+    "name": "کٲشُر",
+    "speech": "ks-IN",
+    "status": "planned",
+    "direction": "rtl",
+    "ui": "en"
+  },
+  {
+    "code": "kok",
+    "name": "कोंकणी",
+    "speech": "kok-IN",
+    "status": "planned",
+    "direction": "ltr",
+    "ui": "en"
+  },
+  {
+    "code": "mai",
+    "name": "मैथिली",
+    "speech": "mai-IN",
+    "status": "planned",
+    "direction": "ltr",
+    "ui": "en"
+  },
+  {
+    "code": "mni",
+    "name": "ꯃꯤꯇꯩꯂꯣꯟ",
+    "speech": "mni-IN",
+    "status": "planned",
+    "direction": "ltr",
+    "ui": "en"
+  },
+  {
+    "code": "ne",
+    "name": "नेपाली",
+    "speech": "ne-IN",
+    "status": "planned",
+    "direction": "ltr",
+    "ui": "en"
+  },
+  {
+    "code": "sa",
+    "name": "संस्कृतम्",
+    "speech": "sa-IN",
+    "status": "planned",
+    "direction": "ltr",
+    "ui": "en"
+  },
+  {
+    "code": "sat",
+    "name": "ᱥᱟᱱᱛᱟᱲᱤ",
+    "speech": "sat-IN",
+    "status": "planned",
+    "direction": "ltr",
+    "ui": "en"
+  },
+  {
+    "code": "sd",
+    "name": "سنڌي",
+    "speech": "sd-IN",
+    "status": "planned",
+    "direction": "rtl",
+    "ui": "en"
+  }
+]

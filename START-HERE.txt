@@ -1,15 +1,19 @@
-CATCHY AI - START HERE
+CATCHY AI PRODUCT - START HERE
 
-The localhost address works ONLY while the Catchy server is running.
+1. Extract the whole ZIP.
+2. Install Python 3.11 or newer.
+3. Windows: double-click START-WINDOWS.bat in the extracted folder.
+   macOS/Linux: run sh start.sh in that folder.
+4. The first run installs the Python dependencies, then opens the website.
+5. KEEP THE TERMINAL WINDOW OPEN. Closing it stops the local server.
 
-1. Right-click the ZIP and choose Extract All.
-2. Open the extracted catchy-ai folder.
-3. Double-click START-WINDOWS.bat, not index.html.
-4. Wait for: Catchy AI is ready: http://localhost:8000
-5. Your browser opens automatically. KEEP THE TERMINAL WINDOW OPEN.
+The default local setup needs no model key, PostgreSQL or Redis installation.
+Docker Compose supplies PostgreSQL and Redis for a production-like setup.
 
-Requires Python 3.11 or newer. If Python is missing, the launcher shows
-installation instructions. If startup fails, send the terminal error.
+To install on a phone, use a deployed HTTPS instance and the browser's
+Add to Home screen feature. Your phone's localhost is NOT your computer.
+For the Android native project and APK build, see docs/ANDROID.md.
 
-Closing the terminal or pressing Ctrl+C stops the website.
-Read README.md for features, tests, optional AI and deployment.
+English, Hindi and Telugu are beta. Other language coverage is labeled
+inside the app. Scores are not fraud probabilities. No raw audio is stored.
+Read README.md and docs/VERIFICATION.md before demonstrating the product.

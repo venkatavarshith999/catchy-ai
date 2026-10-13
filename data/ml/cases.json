@@ -1,0 +1,202 @@
+[
+  {
+    "id": "ml-scam-01",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ബാങ്ക്",
+      "ഉടനെ",
+      "ഒടിപി പറയുക"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ml-genuine-01",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ബാങ്ക്. ഒടിപി പറയരുത്"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ml-scam-02",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "പോലീസ്",
+      "ഇപ്പോൾ തന്നെ",
+      "പിൻ അയക്കുക"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ml-genuine-02",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "പോലീസ്. പിൻ പങ്കിടരുത്"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ml-scam-03",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ബാങ്ക്",
+      "ഉടനെ",
+      "പാസ്‌വേഡ് ഇൻസ്റ്റാൾ ചെയ്യുക"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ml-genuine-03",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ബാങ്ക്. പാസ്‌വേഡ് അയക്കരുത്"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ml-scam-04",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "പോലീസ്",
+      "ഇപ്പോൾ തന്നെ",
+      "കോഡ് പറയുക"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ml-genuine-04",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "പോലീസ്. കോഡ് parayaruthu"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ml-scam-05",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ബാങ്ക്",
+      "ഉടനെ",
+      "ഒടിപി അയക്കുക"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ml-genuine-05",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ബാങ്ക്. ഒടിപി പറയരുത്"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ml-scam-06",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "പോലീസ്",
+      "ഇപ്പോൾ തന്നെ",
+      "പിൻ ഇൻസ്റ്റാൾ ചെയ്യുക"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ml-genuine-06",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "പോലീസ്. പിൻ പങ്കിടരുത്"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ml-scam-07",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ബാങ്ക്",
+      "ഉടനെ",
+      "പാസ്‌വേഡ് പറയുക"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ml-genuine-07",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ബാങ്ക്. പാസ്‌വേഡ് അയക്കരുത്"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ml-scam-08",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "പോലീസ്",
+      "ഇപ്പോൾ തന്നെ",
+      "കോഡ് അയക്കുക"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ml-genuine-08",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "പോലീസ്. കോഡ് parayaruthu"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ml-scam-09",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ബാങ്ക്",
+      "ഉടനെ",
+      "ഒടിപി ഇൻസ്റ്റാൾ ചെയ്യുക"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ml-genuine-09",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ബാങ്ക്. ഒടിപി പറയരുത്"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ml-scam-10",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "പോലീസ്",
+      "ഇപ്പോൾ തന്നെ",
+      "പിൻ പറയുക"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ml-genuine-10",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "പോലീസ്. പിൻ പങ്കിടരുത്"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  }
+]

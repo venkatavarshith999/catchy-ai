@@ -1,0 +1,202 @@
+[
+  {
+    "id": "pa-scam-01",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ਬੈਂਕ",
+      "ਤੁਰੰਤ",
+      "ਓਟੀਪੀ ਦੱਸੋ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "pa-genuine-01",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ਬੈਂਕ. ਓਟੀਪੀ ਨਾ ਦੱਸੋ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "pa-scam-02",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ਪੁਲਿਸ",
+      "ਹੁਣੇ",
+      "ਪਿੰਨ ਭੇਜੋ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "pa-genuine-02",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ਪੁਲਿਸ. ਪਿੰਨ ਨਾ ਭੇਜੋ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "pa-scam-03",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ਬੈਂਕ",
+      "ਤੁਰੰਤ",
+      "ਪਾਸਵਰਡ ਇੰਸਟਾਲ ਕਰੋ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "pa-genuine-03",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ਬੈਂਕ. ਪਾਸਵਰਡ ਸ਼ੇਅਰ ਨਾ ਕਰੋ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "pa-scam-04",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ਪੁਲਿਸ",
+      "ਹੁਣੇ",
+      "ਕੋਡ ਦੱਸੋ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "pa-genuine-04",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ਪੁਲਿਸ. ਕੋਡ na dasso"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "pa-scam-05",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ਬੈਂਕ",
+      "ਤੁਰੰਤ",
+      "ਓਟੀਪੀ ਭੇਜੋ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "pa-genuine-05",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ਬੈਂਕ. ਓਟੀਪੀ ਨਾ ਦੱਸੋ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "pa-scam-06",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ਪੁਲਿਸ",
+      "ਹੁਣੇ",
+      "ਪਿੰਨ ਇੰਸਟਾਲ ਕਰੋ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "pa-genuine-06",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ਪੁਲਿਸ. ਪਿੰਨ ਨਾ ਭੇਜੋ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "pa-scam-07",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ਬੈਂਕ",
+      "ਤੁਰੰਤ",
+      "ਪਾਸਵਰਡ ਦੱਸੋ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "pa-genuine-07",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ਬੈਂਕ. ਪਾਸਵਰਡ ਸ਼ੇਅਰ ਨਾ ਕਰੋ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "pa-scam-08",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ਪੁਲਿਸ",
+      "ਹੁਣੇ",
+      "ਕੋਡ ਭੇਜੋ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "pa-genuine-08",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ਪੁਲਿਸ. ਕੋਡ na dasso"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "pa-scam-09",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ਬੈਂਕ",
+      "ਤੁਰੰਤ",
+      "ਓਟੀਪੀ ਇੰਸਟਾਲ ਕਰੋ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "pa-genuine-09",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ਬੈਂਕ. ਓਟੀਪੀ ਨਾ ਦੱਸੋ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "pa-scam-10",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ਪੁਲਿਸ",
+      "ਹੁਣੇ",
+      "ਪਿੰਨ ਦੱਸੋ"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "pa-genuine-10",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ਪੁਲਿਸ. ਪਿੰਨ ਨਾ ਭੇਜੋ"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  }
+]

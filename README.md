@@ -1,108 +1,106 @@
-# Catchy AI
-## A little clarity. A lot more peace of mind.
+# Catchy AI · Product beta
 
-A complete locally runnable hackathon application: premium responsive dashboard, account-backed APIs, persistent SQLite storage, explainable scam-signal analysis and optional Ollama contextual AI.
+A multilingual conversation-safety companion for older adults and their families. Catchy identifies suspicious **requests and pressure tactics**, shows an understandable warning, and helps the user reach someone they trust.
 
-## Start here
+The product has a phone-first interface, a responsive family workspace, a FastAPI service, persistent accounts, consented contacts, optional speech/model providers, and release automation. It preserves the original prototype in separate legacy modules.
 
-Extract the ZIP, open a terminal inside catchy-ai, and run:
+## Start on Windows
 
-    python -m backend.server
+1. Extract the entire ZIP to a normal folder.
+2. Install Python 3.11 or newer.
+3. Double-click **START-WINDOWS.bat**. The first run needs internet to install dependencies.
+4. Wait for `Catchy AI ready: http://localhost:8000` and the browser to open.
+5. **Keep that terminal window open.** Closing it stops the website.
 
-Open http://localhost:8000. On macOS/Linux use python3. On Windows you can double-click START-WINDOWS.bat. Python 3.11+ is required. The baseline needs no paid API key or third-party packages. Do not open index.html directly.
+Do not open the HTML file directly. `localhost refused to connect` means the server is not listening; rerun the launcher and read its error output. If port 8000 is occupied, set `PORT=8001` in your terminal before starting. The launcher uses the same origin and port for the app.
 
-## Included functionality
+On macOS/Linux: `sh start.sh`. To run without opening a browser:
 
-- Six connected views: overview, live protection, session history, trusted circle, demo studio and preferences.
-- Clearly labeled guest demos using a local rules engine.
-- Registration, login, logout and account-private data.
-- Backend analysis of typed conversations and supported browser microphone transcripts.
-- Cumulative severity, transcript evidence, warnings and optional spoken guidance.
-- Persistent session metadata, opt-in redacted transcripts, search, filtering, export and deletion.
-- Private trusted contacts with click-to-call links. No automatic messages.
-- Optional contextual AI with output validation and explicit rules fallback.
-- Docker configuration, automated tests, synthetic evaluation and GitHub Actions CI/CD.
+```sh
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: . .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m uvicorn backend.product:app --host 127.0.0.1 --port 8000 --no-access-log
+```
 
-## Organization
+Open `http://localhost:8000` exactly; origin protection intentionally rejects mismatched hosts. Local development uses SQLite and bounded in-memory live context. PostgreSQL and Redis are provided by `docker compose up --build`; Docker must be installed and running.
 
-    frontend/            Interface, styling, guest detector and browser input
-    backend/             HTTP API, authentication, validation and persistence
-    database/            Initial SQLite schema
-    llms/                Detection rules and Ollama adapter
-    tests/               API, security and detection regressions
-    evaluation/          Synthetic cases and measured results
-    deployment/          HTTPS proxy and production Compose configuration
-    scripts/             Packaging and health-gated deployment
-    docs/                Architecture, API, security, design and presentation guides
-    .github/workflows/   CI and approved CD
+## Try it in three minutes
 
-## First run
+Choose English, Hindi or Telugu. Select **Try a safe demo → Scam simulation**, give consent, and watch the high-risk request trigger a full-screen warning. Repeat with **Genuine-call simulation**. Use **Type or paste** for your own synthetic examples. Microphone mode depends on your browser/device and speech provider.
 
-1. Open Demo studio, select a scenario and confirm the processing notice.
-2. Choose Guest workspace to create your own account. No accounts are pre-seeded.
-3. Open Live protection, choose Type a conversation, start a session, and try: Please read your OTP to me.
-4. End the session and inspect Session history.
-5. Add a trusted contact. The Call button opens your device dialer; it does not call automatically.
+Create an account to save metadata and manage the trusted circle. Redacted transcript retention is off by default. To test accepted invitations locally without SMTP, set `DEV_EMAIL_CODES=1` before launch; the verification UI will display development codes. This option is rejected in production. Invite a second account, copy the link, and let that person verify their email and accept it. A contact relationship is not active until accepted.
 
-Use fictional data for demonstrations. Guest history disappears on reload.
+Email verification uses configured SMTP. Optional metadata alerts use the documented HTTPS webhook or SMTP. No paid account, model key, real email, or message delivery is required for typed analysis and simulations. The app explicitly reports unavailable delivery services.
 
-## Stack decision
+## Included
 
-This ZIP uses native HTML/CSS/JavaScript, Python standard-library HTTP services and SQLite instead of the initially proposed React/FastAPI/PostgreSQL stack. It is self-contained and starts without dependency downloads, while separating frontend, backend, data and AI modules.
+| Area | Implementation |
+| --- | --- |
+| Phone experience | Large controls, consent, simple risk states, two-action danger screen, spoken warning fallback, haptics, wake lock, explicit failure states |
+| Family workspace | Session filters, evidence timeline when retained, metadata export, deletion, trusted circle, preferences |
+| Accounts | Email/password sessions, email verification, user/contact/admin roles, ownership checks, account deletion |
+| Detection | Shared rules with native-script and romanized lexicons; optional bounded Ollama refinement; action-request gating and one warning per call |
+| Speech | Browser recognition, Android speech bridge, optional self-hosted Whisper WebSocket worker |
+| Privacy | No application raw-audio storage, redaction before model requests, opt-in transcript retention, expiring live memory, content-free event logging |
+| Operations | PostgreSQL/Redis Compose, HTTPS proxy configuration, health/metrics, optional error webhook, tests, dependency scanning, source packaging and release workflows |
+| Android | Capacitor project, native permissions/haptics/screen-awake/speech bridge, manual CI APK build workflow |
 
-It is a functional single-instance hackathon implementation, not a production-certified fraud prevention service. Before an open public launch, replace the HTTP/auth layer with a maintained production framework and managed identity, add verified recovery, load testing and independent security review.
+## Language status
 
-## Optional Ollama
+English, Hindi and Telugu have complete UI catalogs and authored synthetic test sets. Tamil, Kannada, Malayalam, Marathi, Bengali, Gujarati, Punjabi, Odia, Urdu and Assamese have beta lexicons, script fonts and partially translated catalogs with explicit English fallbacks. Their current tests are lexicon-derived smoke tests. The remaining scheduled languages are listed as planned and disabled. Urdu uses RTL layout.
 
-Install Ollama separately and download an available local model, for example with: ollama pull llama3.2
+All enabled languages remain **beta**. Speech availability depends on installed/browser services; native-speaker and device review are still needed. The evaluation does not establish real-world accuracy. See `evaluation/multilingual-results.json` for every measured result, including misses.
 
-PowerShell:
+## Important product boundaries
 
-    $env:LLM_PROVIDER='ollama'
-    $env:OLLAMA_URL='http://127.0.0.1:11434'
-    $env:OLLAMA_MODEL='llama3.2'
-    python -m backend.server
+- Catchy cannot intercept or end a normal cellular call. Same-phone calls may block microphone access. Use an authorized conversation on a second device when necessary.
+- Browser and native recognition may send audio to the platform's speech service. The self-hosted option processes audio in memory on your server. The app's no-storage promise does not describe external vendors' retention policies.
+- Keep Catchy visible. Backgrounding, loss of connectivity, silence and recognition failures stop protection with an explanation.
+- The included simulations are text playback, not a network VoIP service. Provider/OEM integration is future work.
+- A low-risk result does not verify a caller. A risk score is not a probability of fraud.
+- APK compilation, hardware speech tests, independent accessibility review and production deployment have not been completed in this environment. No compiled APK is included. This is a product beta source release, not a certified public service.
 
-macOS/Linux:
+## Project layout
 
-    LLM_PROVIDER=ollama OLLAMA_MODEL=llama3.2 python3 -m backend.server
+```text
+frontend/       Phone and family UI, catalogs, PWA, fonts and bundled bridge
+backend/        FastAPI API, SQLAlchemy models, providers, rules and observability
+backend/signals/ Data-only multilingual detection lexicons
+llms/           Optional contextual model integration and legacy detector
+database/       Initial schema documentation and SQL
+mobile/         Native bridge source (web assets generated by npm run build)
+android/        Capacitor Android source and Gradle wrapper
+data/<lang>/    Synthetic evaluation cases only
+evaluation/    Per-language evaluation and measured reports
+tests/         Product/privacy/security, service integration and legacy regressions
+scripts/       Build, smoke benchmark, packaging and deployment helpers
+deployment/    HTTPS production Compose configuration
+docs/          Architecture, API, deployment, Android, decisions and verification
+.github/        CI, release image, deployment and Android build workflows
+```
 
-Sign in to exercise server AI. Guest demos always use browser rules. The provider receives redacted text, never raw audio. The five-second provider timeout falls back to rules with an explicit status. No sub-three-second latency guarantee is made. Warm and test the selected model before presenting. The real model service was not available during verification; controlled responses tested validation and failure handling.
+## Developer commands
 
-## Configuration
+Python runs the website; Node 22+ is only needed to rebuild fonts/native assets and run JavaScript checks. Built frontend assets are included in the ZIP.
 
-.env.example documents supported variables. Bare Python reads shell environment variables, not .env files. Docker Compose loads .env.
+```sh
+python -m pip install -r requirements-dev.txt
+npm ci
+npm run build
+npm run check
+npm run format:check
+python -m ruff check .
+python -m ruff format --check .
+python -m pytest -q
+python -m evaluation.multilingual
+python scripts/smoke.py
+python -m pip_audit -r requirements.txt
+npm audit --audit-level=moderate
+python scripts/package.py
+```
 
-| Variable | Default |
-|---|---|
-| HOST | 127.0.0.1 |
-| PORT | 8000 |
-| APP_ORIGIN | http://localhost:8000 |
-| COOKIE_SECURE | 0; use 1 with HTTPS |
-| DATABASE_PATH | data/catchy.db |
-| LLM_PROVIDER | rules; alternatively ollama |
-| OLLAMA_URL | http://127.0.0.1:11434 |
-| OLLAMA_MODEL | llama3.2 |
+`TEST_DATABASE_URL` and `TEST_REDIS_URL` enable the integration test; CI supplies both. The smoke script starts its own temporary server/database and measures local HTTP text-analysis latency. It does not measure audio end-to-end latency. Real speech-end-to-result timings appear in the UI only when the provider supplies a timestamp.
 
-If you change the browser hostname or port, set APP_ORIGIN to that exact URL. For Docker on the host machine, the supplied compose file points Ollama to host.docker.internal.
-
-## Verify
-
-    python -m unittest discover -s tests -v
-    node --check frontend/app.js
-    node tests/test_frontend.cjs
-    python -m evaluation.run
-
-Node 20+ is needed only for JavaScript checks. Evaluation includes known weaknesses and is not an independently measured accuracy benchmark. See docs/VERIFICATION.md.
-
-## Docker and CI/CD
-
-    docker compose up --build
-
-Open http://localhost:8000. A named volume persists data. Stopping containers does not remove it. GitHub workflows test, package, smoke-test containers and publish commit-tagged images after passing main-branch changes. Deployments are manually triggered through a production environment and health checked with image rollback. Nothing has been uploaded or deployed to an external account. Setup is in docs/DEPLOYMENT.md.
-
-## Boundaries
-
-No cellular call interception, caller identity verification, call blocking, automatic SMS, payment integrations or emergency dispatch. No email verification, password recovery or verified caregiver invitations. The baseline is English-first; microphone input requests en-IN. Other languages are unvalidated.
-
-Severity scores are not fraud probabilities. Rules can miss new wording and misread quoted scams. AI adds evidence; it currently does not cancel rule-based false positives. Browser speech support varies and may use the browser vendor's servers. Raw audio is not stored by Catchy; text redaction is best effort.
+Environment variables are documented in `.env.example`. Python does not automatically load that file; export variables in your shell. Docker Compose reads `.env`. Use `docs/DEPLOYMENT.md` and `docs/ANDROID.md` for deployment and APK builds. See `docs/VERIFICATION.md` for what was actually run.

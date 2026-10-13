@@ -8,5 +8,14 @@ __pycache__
 node_modules
 tests
 docs
-evaluation
 artifacts
+
+**/*.db
+**/*.db-wal
+**/*.db-shm
+**/.env
+**/node_modules
+android
+mobile
+.pytest_cache
+.ruff_cache

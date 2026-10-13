@@ -1,17 +1,35 @@
-# Verification record
+# Verification record — 13 October 2026
 
-Verified during the build on 9-10 October 2026:
+## Completed locally
 
-- Python compilation and JavaScript syntax checks passed.
-- 17 Python tests passed: real HTTP/API requests, account isolation, passwords/login/logout, consent validation, contact ownership, retention/deletion, request bounds, throttling, detector behavior and mocked model validation/fallback.
-- 10 guest JavaScript detector regression scenarios passed.
-- The 12-case synthetic development evaluation ran. Ten cases matched expectations. Unseen paraphrasing and quotation of a past scam are intentionally recorded weaknesses. These results do not establish real-world accuracy.
+- Python product/privacy/security and legacy regression suite: **46 passed**, **1 skipped**. The skipped case requires running PostgreSQL and Redis; CI configures those services.
+- JavaScript syntax checks and preserved guest-engine regressions: **10 scenarios passed**, plus **2 ASR lifecycle regressions passed** (stale speech timing and late microphone-permission cleanup). Two known legacy detector limitations remain documented in its evaluation set.
+- Ruff lint/format and Prettier formatting: passed for the configured source scope.
+- Frontend/native asset build and Capacitor Android sync: passed. Public shell tests fetch every asset in the offline manifest and check catalog key parity across all 13 enabled languages.
+- npm dependency audit: **0 known vulnerabilities** at scan time.
+- Python dependency audit: **no known vulnerabilities** for all 59 distributions installed in the tested environment, including development dependencies. Installed versions were enumerated and scanned with pip-audit's pinned-input/no-resolver mode because this sandbox's virtualenv lacked its own pip command. CI uses a normal pip-installed environment and scans requirements. Optional Whisper dependencies were not installed or audited here.
+- Real HTTP process startup and 12 multilingual guest-analysis requests: passed. Measured text HTTP round-trip p50 **10.14 ms**, p95 **20.35 ms** on this development host. This excludes audio, recognition, a remote network and optional LLM work.
+- Synthetic multilingual evaluation: **260 cases**, 20 per enabled language. Authored development examples for English/Hindi/Telugu; lexicon-derived smoke fixtures for the other ten. No independent holdout.
 
-Verification limits:
+## Measured Wave 1 text results
 
-- The server started and in-process HTTP integration tests passed. A separate browser preview could not reach the server in this environment, including after network permission was granted. Visual browser QA and UI interaction testing are not claimed as completed.
-- Docker CLI is available but its daemon is not running. Container execution was not locally verified. CI includes a build and health smoke test.
-- No real Ollama model service, microphone, dialer or speech synthesis was exercised. Model validation and failure behavior used controlled responses.
-- GitHub workflows are supplied, not remotely executed. Deployment requires repository and host setup.
+| Language | Precision | Recall | F1 | Text engine p95 |
+| --- | --- | --- | --- | --- |
+| English | 1.000 | 0.900 | 0.947 | 3.851 ms |
+| Hindi | 1.000 | 1.000 | 1.000 | 7.143 ms |
+| Telugu | 1.000 | 1.000 | 1.000 | 8.323 ms |
 
-Before presenting, run the app in your presentation browser, inspect all six screens at desktop and mobile widths, complete a demo, create a fictional account, test typed input, save/delete a session, and check microphone support if needed.
+Inspect `evaluation/multilingual-results.json` for every case and later-language metric. Gujarati smoke recall is 0.800; do not hide its two missed cases. Perfect scores on ten positives/ten negatives are not evidence of field reliability. These development samples are tiny and partly constructed from the detector's lexicons.
+
+## Not verified in this environment
+
+- Browser visual, keyboard, screen-reader and phone layout QA: browser access was blocked by the tool's security policy. No alternative browser-control route was used.
+- Microphone capture, browser/native speech, TTS voices, Bluetooth, call/microphone contention, offline installation and real audio end-to-end latency. The under-three-second audio target is unmeasured.
+- Self-hosted Whisper/Ollama runtime and native-speaker review. Later beta catalogs are partial translations.
+- Docker runtime and the actual PostgreSQL/Redis integration test: no running Docker daemon/services available locally.
+- Android Gradle compilation, APK installation, release signing and app-store submission: Android SDK unavailable. Source and manual build workflow are included.
+- Real SMTP/SMS/WhatsApp delivery, hosting, HTTPS production rollout and remote GitHub Actions: no provider credentials or deployment target were supplied. Alert tests use mocks and verify metadata/consent behavior.
+
+One test-client deprecation warning comes from FastAPI/Starlette's current httpx adapter. It does not fail the suite; migrate the test transport when the upstream compatibility path is finalized.
+
+This is a tested product beta source release. These remaining checks must be completed before presenting it as a validated public safety service.

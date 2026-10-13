@@ -1,17 +1,9 @@
-# Design system
+# Interface design
 
-Direction: calm editorial typography, deep forest navigation, warm white panels and sage accents. Warning colors are reserved for actual findings. Serif display type adds warmth; native sans-serif fonts keep operational screens readable without network font downloads.
+The visual system uses forest green, warm ivory, sage surfaces, generous spacing, a serif desktop headline and locally hosted Noto script fonts. Desktop supports history, evidence and family settings; the phone home hides the editorial intro to prioritize the primary action.
 
-Screens:
-- Overview: welcome, start action, real account statistics and recent sessions.
-- Live protection: separate transcript and evidence; prominent actionable warnings.
-- History: filter, review, export metadata and delete.
-- Trusted circle: manage up to five contacts; direct dialer links.
-- Demo studio: three plainly labeled synthetic scenarios.
-- Preferences: explain data handling and change retention/voice behavior.
+Phone text starts at 20 px. Buttons, selects and checkbox controls have at least 56 px targets. Extra-large text and a stronger contrast mode are available. The warning is a full-screen red dialog with exactly two actions. Risk is communicated with text as well as color, and a low result never claims a caller is genuine.
 
-Layouts adapt at 1150, 900 and 650 pixels. Mobile navigation is collapsible. Forms have labels, native modal dialogs trap focus, evidence is announced through live regions, status uses text as well as color, keyboard focus is visible and reduced-motion preferences are respected. Monitoring text and controls are larger than decorative dashboard labels.
+Semantic headings, form labels, live status regions, focus outlines, native dialogs, reduced-motion support and RTL logical spacing are implemented. Full keyboard/screen-reader, zoom, overflow and contrast validation on actual browsers/devices is still required. Browser visual inspection was blocked in the build environment, so this document describes implementation rather than a WCAG certification.
 
-The sidebar avatar and overview statistics use real account state. Decorative guest circle symbols are illustrations, not fabricated contacts. No stock images or externally loaded fonts are required.
-
-Accessibility is designed in but not independently audited. Validate contrast, touch targets, screen-reader behavior and readability with elderly users before a public pilot. Desktop/mobile visual QA could not be completed in the provided browser environment; see VERIFICATION.md.
+English/Hindi/Telugu catalogs cover all product message keys. Later beta catalogs intentionally label partial translation and English fallback. Font licenses accompany bundled assets. The Android launcher icon is a code-native vector matching the product palette.

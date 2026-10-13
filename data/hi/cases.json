@@ -1,0 +1,189 @@
+[
+  {
+    "id": "hi-scam-01",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "अपना ओटीपी बताएं।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-scam-02",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "अपना पिन अभी बताओ।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-scam-03",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "कृपया पासवर्ड भेजें।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-scam-04",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "मैं बैंक अधिकारी हूँ।",
+      "आपका खाता बंद हो जाएगा।",
+      "तुरंत सुरक्षित खाते में पैसे भेजें।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-scam-05",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "मैं पुलिस से हूँ।",
+      "आप गिरफ्तार हो जाएंगे।",
+      "अभी पैसे भेजो।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-scam-06",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "यह बात गुप्त रखें।",
+      "मोबाइल पर आया कोड बताएं।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-scam-07",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "AnyDesk ऐप इंस्टॉल करें।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-scam-08",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "apna otp abhi batao"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-scam-09",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "bank se bol rahe hain",
+      "account block ho jayega",
+      "turant paise bhejo"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-scam-10",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ओटीपी साझा न करें। लेकिन यह कोड बताओ।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-genuine-01",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "आपकी अस्पताल की मुलाकात आज है। समय पर आएं।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-genuine-02",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "बैंक कभी ओटीपी नहीं मांगते।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-genuine-03",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "अपना ओटीपी मत बताएं।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-genuine-04",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "आपका सामान दरवाजे पर है।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-genuine-05",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "नमस्ते दादी, आज खाना साथ खाएंगे।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-genuine-06",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "यह जरूरी है, अस्पताल का समय बदल गया है।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-genuine-07",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "किसी अनजान को पैसे मत भेजें।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-genuine-08",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "अपने बैंक के आधिकारिक नंबर पर पुष्टि करें।"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-genuine-09",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "otp share mat karo"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "hi-genuine-10",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "पिन कभी न बताएं।"
+    ],
+    "source": "authored synthetic development example"
+  }
+]

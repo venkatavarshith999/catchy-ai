@@ -1,7 +1,11 @@
 # Evaluation protocol
 
-cases.json is a synthetic development regression set, not held-out data. It includes known weaknesses. Run python -m evaluation.run to regenerate results.json with the configured classifier.
+Run `python -m evaluation.multilingual`. The report includes 20 cases per enabled language (10 high-risk scam, 10 genuine), confusion counts, precision, recall, F1, per-case outcomes and text-engine p50/p95 timing. English/Hindi/Telugu cases are authored synthetic development examples. The ten later beta packs use lexicon-derived smoke cases and are labeled accordingly. None is an independent holdout or field-accuracy estimate.
 
-Do not use its tiny sample as a marketing accuracy claim. Build a separately labeled, script-family-disjoint set containing unfamiliar wording, multiple speakers, noise, legitimate urgency, quotations, protective statements and adversarial instructions. Test languages separately.
+`python scripts/smoke.py` starts a real local HTTP service against an isolated temporary database and measures 12 text request round trips. It verifies readiness and frontend serving. `http-benchmark.json` explicitly leaves audio end-to-end timing null.
 
-Measure time from a dangerous utterance ending to the visible warning. The app's latency_ms excludes transcription and transport. Compare rules and contextual modes, recording failures, false alerts and missed scams. A low score never guarantees safety.
+During real browser/Android speech use, the UI displays speech-end-to-result latency only when recognition provides a speech-end timestamp. Hosted chunked ASR does not currently provide one. Typed/simulated text is not presented as an audio benchmark. The under-three-second speech target has not been validated.
+
+Build a separately labeled, script-family-disjoint holdout containing unfamiliar wording, multiple speakers, noise, legitimate urgency, quotations, protective statements and prompt-injection attempts. Native speakers should review labels and translations; obtain consent for any real recordings. Benchmark supported phones, speech providers and code-mixing separately. Do not tune exclusively to these tiny fixtures or use their scores as marketing claims.
+
+`cases.json`, `run.py` and `results.json` in this folder preserve the legacy English-only protocol. The current multilingual fixtures live in `data/<lang>/cases.json`.

@@ -1,11 +1,13 @@
-# Security and privacy notes
+# Security and privacy implementation
 
-Implemented controls: salted password hashes; random hashed session tokens; HttpOnly/SameSite cookies; HTTPS Secure-cookie option; origin/custom-header request protection; bounded JSON input; parameterized SQL; account ownership checks; basic request throttling; static path allowlist; CSP; framing protection; no raw audio storage; opt-in transcript persistence; minimal logs; user-controlled deletion.
+Session cookies are HttpOnly and SameSite=Strict, with Secure enabled on HTTPS. Stored session tokens and verification codes are hashed; passwords use salted PBKDF2 from the preserved authentication utility. Ownership is checked for sessions and relationships. Administrator assignment uses an environment allowlist and evaluation access also requires verified email.
 
-App code escapes text before inserting it into HTML. User text is never used as executable code or a provider URL. Model responses are constrained to evidence and cannot send messages, call contacts, or change account settings.
+Mutation origin checks, a required custom request header, bounded input, parameterized SQLAlchemy operations, CSP and a frontend-only static route constrain common attack paths. Public caching excludes APIs. WebSocket messages recheck authentication, limits and context expiry. Redis locks serialize call updates and alert cooldowns.
 
-This is a hackathon application. Its standard-library HTTP server is not a hardened public service. Authentication is unverified email/password without recovery or MFA. SQLite files are not automatically encrypted. Cookies and transport require correctly configured HTTPS outside localhost. Text redaction is incomplete for unusual secrets and names.
+The application does not save raw audio. Submitted conversation text is redacted before retention and model requests. Redaction is best effort, not a guarantee of anonymity. Transcripts/evidence are opt-in per new call. Browser/Android speech services have their own processing policies. The optional self-hosted worker processes audio in memory, but infrastructure must also avoid recording request streams, process dumps or sensitive traces.
 
-Microphone recognition can send audio to browser-provider infrastructure. Consent copy discloses this before starting. No actual microphone access was exercised during automated verification. Do not imply phone-call interception or legal compliance certification.
+Contacts must accept using the invited verified email. Alert delivery requires acceptance, both consent flags, the sender's setting, explicit request and high-risk call state (or an explicit test). Revocation blocks later requests. Metadata has only risk/time/language; provider routing separately requires an address. Recipient phone numbers are self-asserted, not SMS-verified.
 
-A public release needs maintained server/auth infrastructure, security review, verified identity recovery, device/session management, distributed rate limits, backup encryption and retention policy, an abuse response process, and load testing. Configure deployment secrets only through the CI platform, never in source files.
+Account deletion removes owned and recipient contact relationships, logins, sessions and delivery rows through foreign-key cascades, and clears owned live context. Configure backup expiration separately. Current initial-schema management does not replace a future migration system. This release has no password-reset flow, independent penetration test, formal accessibility certification or external privacy/legal sign-off.
+
+Dependency scanning is included in CI. Secrets are environment variables. The packager excludes `.env` files, database files, caches, signing keys and runtime data, and includes only named synthetic fixtures under `data/`. Keep infrastructure logs and monitoring free of request content; the optional monitoring hook receives only fixed event metadata.

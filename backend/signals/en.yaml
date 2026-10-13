@@ -1,0 +1,91 @@
+{
+  "signals": {
+    "authority": [
+      "bank",
+      "police",
+      "officer",
+      "government",
+      "security team",
+      "technical support"
+    ],
+    "urgency": [
+      "immediately",
+      "right now",
+      "urgent",
+      "last chance",
+      "within five minutes"
+    ],
+    "fear": [
+      "arrest",
+      "frozen",
+      "blocked",
+      "warrant",
+      "legal action"
+    ],
+    "secrecy": [
+      "do not tell",
+      "keep this secret",
+      "stay on the line",
+      "keep this confidential",
+      "do not contact"
+    ],
+    "credential": [
+      "otp",
+      "pin",
+      "password",
+      "verification code",
+      "six-digit",
+      "security code",
+      "one-time code"
+    ],
+    "payment": [
+      "transfer",
+      "send money",
+      "safe account",
+      "gift card",
+      "move your savings"
+    ],
+    "remote": [
+      "anydesk",
+      "teamviewer",
+      "remote access",
+      "screen share",
+      "install this app"
+    ]
+  },
+  "ask": [
+    "tell",
+    "share",
+    "read",
+    "give",
+    "send",
+    "provide",
+    "enter",
+    "transfer",
+    "move",
+    "install",
+    "download",
+    "pay",
+    "buy",
+    "allow",
+    "open"
+  ],
+  "protective": [
+    "never share",
+    "do not share",
+    "never give",
+    "do not give",
+    "never install",
+    "do not install",
+    "we will not ask",
+    "we never ask",
+    "do not transfer",
+    "never tell"
+  ],
+  "reported": [
+    "the scammer said",
+    "the caller yesterday said",
+    "i reported that",
+    "example of a scam"
+  ]
+}

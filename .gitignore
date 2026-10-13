@@ -13,3 +13,31 @@ dist/
 artifacts/
 
 deployment/current-image
+# Include only synthetic datasets, never runtime databases or user records.
+!data/
+data/*
+!data/en/
+!data/hi/
+!data/te/
+!data/*/cases.json
+!data/ta/
+!data/kn/
+!data/ml/
+!data/mr/
+!data/bn/
+!data/gu/
+!data/pa/
+!data/or/
+!data/ur/
+!data/as/
+!data/*/cases.json
+mobile/web/
+android/.gradle/
+android/local.properties
+android/**/build/
+.build-temp/
+.pytest_cache/
+.ruff_cache/
+*.jks
+*.keystore
+*.hprof

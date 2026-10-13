@@ -1,0 +1,46 @@
+{
+  "privacy": [
+    {
+      "title": "What Catchy processes",
+      "text": "Catchy processes the conversation text you submit, your account information and contacts you invite. Microphone mode may use the browser vendor’s speech service. A self-hosted speech service, when configured, processes audio in memory. Catchy does not save raw audio."
+    },
+    {
+      "title": "What is kept",
+      "text": "Guest analysis is temporary. Signed-in sessions retain metadata for your chosen period, up to 90 days. Transcripts and quoted evidence are saved only when you enable retention before starting a session. Redaction is best effort and can miss private details. Do not enter real passwords or secret codes."
+    },
+    {
+      "title": "Who receives information",
+      "text": "Configured speech and contextual-model services process the input needed for analysis. Accepted contacts receive an alert only when both people permit it and you request it. Incident messages contain risk level, time and language, not audio or transcript. The delivery provider also needs the recipient address."
+    },
+    {
+      "title": "Your controls",
+      "text": "You can delete individual sessions or delete your account and associated information in Preferences. Live conversation memory expires after 30 minutes of inactivity. Account deletion clears active memory. Existing operator backups may retain information until their backup-retention period ends."
+    },
+    {
+      "title": "Optional usage counts",
+      "text": "Anonymous analytics are off by default. If enabled, only daily counts of warnings shown, warnings dismissed and contact calls are recorded. These aggregate counts cannot be linked back to your account. Service operators are responsible for secure hosting, backup policies and privacy support."
+    }
+  ],
+  "terms": [
+    {
+      "title": "Assistance, not a guarantee",
+      "text": "Catchy is a beta safety assistant. It may miss scams or warn about legitimate conversations. A low-risk result does not verify a caller, and a warning is not proof of fraud. Verify important requests through a trusted independent channel."
+    },
+    {
+      "title": "Use with permission",
+      "text": "Start microphone processing only when you have the permission required for your conversation. Catchy does not intercept normal cellular calls, end calls or contact emergency services. Your device may prevent concurrent microphone use."
+    },
+    {
+      "title": "Accounts and contacts",
+      "text": "Keep account credentials private. Only invite people you trust and let them decide whether to accept and receive notifications. You control sending alerts; provider acceptance does not guarantee delivery."
+    },
+    {
+      "title": "Availability",
+      "text": "Internet, speech services, model services and device capabilities affect availability. Keep the application visible while listening. If protection stops, the interface explains that it is unavailable. This application is not an emergency response service."
+    },
+    {
+      "title": "Service operator",
+      "text": "The person or organization hosting this instance is responsible for support and any additional service terms. Deployment-specific contact information and policies must be supplied by that operator before a public launch."
+    }
+  ]
+}

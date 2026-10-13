@@ -1,0 +1,202 @@
+[
+  {
+    "id": "ur-scam-01",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "بینک",
+      "فوراً",
+      "او ٹی پی بتائیں"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ur-genuine-01",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "بینک. او ٹی پی نہ بتائیں"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ur-scam-02",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "پولیس",
+      "ابھی",
+      "پن بھیجیں"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ur-genuine-02",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "پولیس. پن نہ بھیجیں"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ur-scam-03",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "بینک",
+      "فوراً",
+      "پاس ورڈ انسٹال کریں"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ur-genuine-03",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "بینک. پاس ورڈ شیئر نہ کریں"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ur-scam-04",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "پولیس",
+      "ابھی",
+      "کوڈ بتائیں"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ur-genuine-04",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "پولیس. کوڈ na batayen"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ur-scam-05",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "بینک",
+      "فوراً",
+      "او ٹی پی بھیجیں"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ur-genuine-05",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "بینک. او ٹی پی نہ بتائیں"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ur-scam-06",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "پولیس",
+      "ابھی",
+      "پن انسٹال کریں"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ur-genuine-06",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "پولیس. پن نہ بھیجیں"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ur-scam-07",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "بینک",
+      "فوراً",
+      "پاس ورڈ بتائیں"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ur-genuine-07",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "بینک. پاس ورڈ شیئر نہ کریں"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ur-scam-08",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "پولیس",
+      "ابھی",
+      "کوڈ بھیجیں"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ur-genuine-08",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "پولیس. کوڈ na batayen"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ur-scam-09",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "بینک",
+      "فوراً",
+      "او ٹی پی انسٹال کریں"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ur-genuine-09",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "بینک. او ٹی پی نہ بتائیں"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "ur-scam-10",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "پولیس",
+      "ابھی",
+      "پن بتائیں"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "ur-genuine-10",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "پولیس. پن نہ بھیجیں"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  }
+]

@@ -1,14 +1,7 @@
-# Database guide
+# Product database
 
-SQLite initializes automatically from 001_initial.sql. Foreign keys, WAL journaling and parameterized queries are enabled. No database binary or user records are included in the archive.
+`backend/product_store.py` defines the v2 SQLAlchemy schema: users, hashed login sessions, calls, contacts, delivery statuses and anonymous counters. Fresh databases are initialized at startup. Local development writes `data/product.db`; deployment uses PostgreSQL.
 
-- users: identity and salted password hash.
-- auth_sessions: hashed opaque token and eight-hour expiry.
-- calls: owner, title, mode, score, lifecycle, retention snapshot and turn count.
-- turns: optional redacted transcript and evidence, ordered within a call.
-- contacts: private contact name, number and relationship.
-- settings: retention and spoken-warning preferences.
+`002_product_postgres.sql` is generated fresh-schema DDL for review/manual provisioning, including indexes and foreign-key cascades. It is not a v1-to-v2 data migration. `001_initial.sql` belongs to the preserved legacy prototype. Do not apply v1 DDL to a product database or replace an existing user's DB with a demo DB.
 
-Deleting a call cascades to its turns. Every session lookup includes the owner's account ID. Contact operations are owner-scoped. The initial schema is for fresh installations; future changes need a migration runner and compatibility strategy.
-
-Use SQLite's online backup API for a running database. Do not copy only the main database file while WAL writes are active. Keep encrypted, access-restricted backups and test restoring into a separate environment. Deleted records can remain in older backups until operator-defined retention expires.
+A future schema alteration needs a versioned migration and backup/restore rehearsal. Image rollback alone does not revert database changes. Runtime database files and actual user records are excluded from the source ZIP.

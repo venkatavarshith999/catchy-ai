@@ -1,0 +1,202 @@
+[
+  {
+    "id": "bn-scam-01",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ব্যাংক",
+      "এখনই",
+      "ওটিপি বলুন"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "bn-genuine-01",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ব্যাংক. ওটিপি বলবেন না"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "bn-scam-02",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "পুলিশ",
+      "অবিলম্বে",
+      "পিন পাঠান"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "bn-genuine-02",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "পুলিশ. পিন শেয়ার করবেন না"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "bn-scam-03",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ব্যাংক",
+      "এখনই",
+      "পাসওয়ার্ড ইনস্টল করুন"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "bn-genuine-03",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ব্যাংক. পাসওয়ার্ড পাঠাবেন না"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "bn-scam-04",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "পুলিশ",
+      "অবিলম্বে",
+      "কোড বলুন"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "bn-genuine-04",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "পুলিশ. কোড bolben na"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "bn-scam-05",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ব্যাংক",
+      "এখনই",
+      "ওটিপি পাঠান"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "bn-genuine-05",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ব্যাংক. ওটিপি বলবেন না"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "bn-scam-06",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "পুলিশ",
+      "অবিলম্বে",
+      "পিন ইনস্টল করুন"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "bn-genuine-06",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "পুলিশ. পিন শেয়ার করবেন না"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "bn-scam-07",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ব্যাংক",
+      "এখনই",
+      "পাসওয়ার্ড বলুন"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "bn-genuine-07",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ব্যাংক. পাসওয়ার্ড পাঠাবেন না"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "bn-scam-08",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "পুলিশ",
+      "অবিলম্বে",
+      "কোড পাঠান"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "bn-genuine-08",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "পুলিশ. কোড bolben na"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "bn-scam-09",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ব্যাংক",
+      "এখনই",
+      "ওটিপি ইনস্টল করুন"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "bn-genuine-09",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "ব্যাংক. ওটিপি বলবেন না"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "bn-scam-10",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "পুলিশ",
+      "অবিলম্বে",
+      "পিন বলুন"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "bn-genuine-10",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "পুলিশ. পিন শেয়ার করবেন না"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  }
+]

@@ -1,2 +1,8 @@
-# No third-party runtime packages. Requires Python 3.11+.
-# Tests use the Python standard library; JS checks use Node.js 20+.
+fastapi==0.143.0
+uvicorn[standard]==0.54.0
+SQLAlchemy==2.1.4
+psycopg[binary]==3.3.6
+redis==6.4.0
+httpx==0.28.1
+PyYAML==6.0.3
+python-multipart==0.0.32

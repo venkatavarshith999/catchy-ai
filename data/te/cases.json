@@ -1,0 +1,189 @@
+[
+  {
+    "id": "te-scam-01",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "మీ ఓటీపీ చెప్పండి."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-scam-02",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "మీ పిన్ ఇప్పుడే చెప్పండి."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-scam-03",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "మీ పాస్‌వర్డ్ పంపండి."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-scam-04",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "నేను బ్యాంకు అధికారి.",
+      "ఖాతా బ్లాక్ అవుతుంది.",
+      "వెంటనే సురక్షిత ఖాతాకు డబ్బు పంపండి."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-scam-05",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "నేను పోలీసు అధికారి.",
+      "అరెస్టు చేస్తాం.",
+      "ఇప్పుడే డబ్బు పంపండి."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-scam-06",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "ఎవరికీ చెప్పవద్దు.",
+      "మీ ఫోన్ కోడ్ చదవండి."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-scam-07",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "AnyDesk యాప్ ఇన్‌స్టాల్ చేయండి."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-scam-08",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "mee otp ippude cheppandi"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-scam-09",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "bank nunchi matladutunnam",
+      "account block chestam",
+      "ventane dabbu pampandi"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-scam-10",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "మీ ఓటీపీ చెప్పకండి. కానీ ఈ కోడ్ చెప్పండి."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-genuine-01",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "మీ ఆసుపత్రి అపాయింట్‌మెంట్ ఈరోజు ఉంది."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-genuine-02",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "మీ ఓటీపీ చెప్పకండి."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-genuine-03",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "బ్యాంకు మీ పిన్ అడగము."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-genuine-04",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "మీ పార్సెల్ గేటు దగ్గర ఉంది."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-genuine-05",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "అమ్మమ్మా, భోజనం చేశారా?"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-genuine-06",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "వెంటనే ఆసుపత్రికి రండి, అపాయింట్‌మెంట్ మారింది."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-genuine-07",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "తెలియని వారికి డబ్బు పంపవద్దు."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-genuine-08",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "అధికారిక బ్యాంకు నంబరుకు కాల్ చేసి నిర్ధారించుకోండి."
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-genuine-09",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "mee otp share cheyoddu"
+    ],
+    "source": "authored synthetic development example"
+  },
+  {
+    "id": "te-genuine-10",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "అనుమానాస్పద యాప్ ఇన్‌స్టాల్ చేయవద్దు."
+    ],
+    "source": "authored synthetic development example"
+  }
+]

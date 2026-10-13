@@ -1,14 +1,36 @@
 {
   "name": "catchy-ai",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "Development checks for the dependency-free Catchy AI web application",
+  "description": "Catchy AI multilingual conversation-safety product",
   "scripts": {
-    "check": "node --check frontend/app.js && node tests/test_frontend.cjs",
-    "format": "prettier --write frontend tests/*.cjs *.json .github/workflows/*.yml",
-    "format:check": "prettier --check frontend tests/*.cjs *.json .github/workflows/*.yml"
+    "check": "node --check frontend/product.js && node --check frontend/asr.js && node --check frontend/i18n.js && node --check frontend/sw.js && node tests/test_frontend.cjs && node tests/test_asr.mjs",
+    "format": "prettier --write frontend mobile/native-entry.js tests/*.mjs scripts/*.mjs *.json .github/workflows/*.yml",
+    "format:check": "prettier --check frontend mobile/native-entry.js tests/*.mjs scripts/*.mjs *.json .github/workflows/*.yml",
+    "build": "node scripts/build-mobile.mjs",
+    "android:sync": "npm run build && cap sync android"
   },
   "devDependencies": {
+    "@capacitor/cli": "8.4.3",
+    "esbuild": "^0.28.2",
     "prettier": "3.6.2"
-  }
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/haptics": "^8.0.2",
+    "@fontsource/noto-sans": "^5.3.0",
+    "@fontsource/noto-sans-arabic": "^5.3.0",
+    "@fontsource/noto-sans-bengali": "^5.3.0",
+    "@fontsource/noto-sans-devanagari": "^5.3.0",
+    "@fontsource/noto-sans-gujarati": "^5.3.0",
+    "@fontsource/noto-sans-gurmukhi": "^5.3.0",
+    "@fontsource/noto-sans-kannada": "^5.3.0",
+    "@fontsource/noto-sans-malayalam": "^5.3.0",
+    "@fontsource/noto-sans-oriya": "^5.3.0",
+    "@fontsource/noto-sans-tamil": "^5.3.0",
+    "@fontsource/noto-sans-telugu": "^5.3.0"
+  },
+  "type": "module"
 }

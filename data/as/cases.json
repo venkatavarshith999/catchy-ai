@@ -1,0 +1,202 @@
+[
+  {
+    "id": "as-scam-01",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "বেংক",
+      "এতিয়াই",
+      "অটিপি কওক"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "as-genuine-01",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "বেংক. অটিপি নকব"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "as-scam-02",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "পুলিচ",
+      "তৎক্ষণাত",
+      "পিন পঠাওক"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "as-genuine-02",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "পুলিচ. পিন নপঠাব"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "as-scam-03",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "বেংক",
+      "এতিয়াই",
+      "পাছৱৰ্ড ইনষ্টল কৰক"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "as-genuine-03",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "বেংক. পাছৱৰ্ড শ্বেয়াৰ নকৰিব"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "as-scam-04",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "পুলিচ",
+      "তৎক্ষণাত",
+      "কোড কওক"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "as-genuine-04",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "পুলিচ. কোড nokobo"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "as-scam-05",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "বেংক",
+      "এতিয়াই",
+      "অটিপি পঠাওক"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "as-genuine-05",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "বেংক. অটিপি নকব"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "as-scam-06",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "পুলিচ",
+      "তৎক্ষণাত",
+      "পিন ইনষ্টল কৰক"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "as-genuine-06",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "পুলিচ. পিন নপঠাব"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "as-scam-07",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "বেংক",
+      "এতিয়াই",
+      "পাছৱৰ্ড কওক"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "as-genuine-07",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "বেংক. পাছৱৰ্ড শ্বেয়াৰ নকৰিব"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "as-scam-08",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "পুলিচ",
+      "তৎক্ষণাত",
+      "কোড পঠাওক"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "as-genuine-08",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "পুলিচ. কোড nokobo"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "as-scam-09",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "বেংক",
+      "এতিয়াই",
+      "অটিপি ইনষ্টল কৰক"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "as-genuine-09",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "বেংক. অটিপি নকব"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  },
+  {
+    "id": "as-scam-10",
+    "kind": "scam",
+    "expected": "high",
+    "turns": [
+      "পুলিচ",
+      "তৎক্ষণাত",
+      "পিন কওক"
+    ],
+    "source": "lexicon-templated smoke; not independent language QA"
+  },
+  {
+    "id": "as-genuine-10",
+    "kind": "genuine",
+    "expected": "not_high",
+    "turns": [
+      "পুলিচ. পিন নপঠাব"
+    ],
+    "source": "lexicon-templated protective example; not genuine-call corpus"
+  }
+]

@@ -1,0 +1,43 @@
+name: Build Android test APK
+on:
+  workflow_dispatch:
+    inputs:
+      app_url:
+        description: Deployed Catchy HTTPS origin (must serve the native bridge assets)
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: android-actions/setup-android@v3
+      - name: Install Android platform
+        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - name: Build and configure wrapper
+        env:
+          CATCHY_APP_URL: ${{ inputs.app_url }}
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+          node scripts/configure-mobile.mjs
+          npx cap sync android
+      - name: Assemble test APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: catchy-android-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk

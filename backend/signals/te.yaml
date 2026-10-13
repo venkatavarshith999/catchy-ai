@@ -1,0 +1,99 @@
+{
+  "signals": {
+    "authority": [
+      "బ్యాంకు",
+      "బ్యాంక్",
+      "పోలీసు",
+      "అధికారి",
+      "ప్రభుత్వం",
+      "bank nunchi",
+      "police nunchi"
+    ],
+    "urgency": [
+      "వెంటనే",
+      "ఇప్పుడే",
+      "త్వరగా",
+      "ventane",
+      "ippude",
+      "tvaraga"
+    ],
+    "fear": [
+      "అరెస్ట్",
+      "అరెస్టు",
+      "బ్లాక్",
+      "స్తంభింప",
+      "కేసు",
+      "arrest",
+      "block chestam"
+    ],
+    "secrecy": [
+      "ఎవరికీ చెప్పవద్దు",
+      "కుటుంబానికి చెప్పవద్దు",
+      "రహస్యం",
+      "evariki cheppoddu",
+      "family ki cheppoddu"
+    ],
+    "credential": [
+      "ఓటీపీ",
+      "ఓటిపి",
+      "పిన్",
+      "పాస్‌వర్డ్",
+      "కోడ్",
+      "otp",
+      "pin",
+      "password",
+      "code"
+    ],
+    "payment": [
+      "డబ్బు",
+      "చెల్లింపు",
+      "సురక్షిత ఖాతా",
+      "నగదు",
+      "dabbu",
+      "dabbulu",
+      "payment"
+    ],
+    "remote": [
+      "యాప్",
+      "స్క్రీన్",
+      "రిమోట్",
+      "anydesk",
+      "app install",
+      "screen share"
+    ]
+  },
+  "ask": [
+    "చెప్పండి",
+    "చెప్పు",
+    "పంపండి",
+    "పంపు",
+    "చదవండి",
+    "చేయండి",
+    "చెయ్యి",
+    "ఇవ్వండి",
+    "cheppandi",
+    "cheppu",
+    "pampandi",
+    "pampu",
+    "chadavandi",
+    "cheyandi",
+    "ivvandi"
+  ],
+  "protective": [
+    "చెప్పకండి",
+    "పంచుకోవద్దు",
+    "ఇవ్వవద్దు",
+    "పంపవద్దు",
+    "చేయవద్దు",
+    "చెప్పవద్దు",
+    "cheppakandi",
+    "pampakandi",
+    "ivvakandi",
+    "share cheyoddu",
+    "అడగము"
+  ],
+  "reported": [
+    "మోసగాడు ఇలా అన్నాడు",
+    "scammer ila annadu"
+  ]
+}
