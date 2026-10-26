@@ -1,11 +1,11 @@
 {
-  "name": "Catchy AI — Safer conversations",
+  "name": "Catchy AI \u2014 Safer conversations",
   "short_name": "Catchy",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#f4f6ef",
-  "theme_color": "#143b2b",
+  "background_color": "#f4f9fb",
+  "theme_color": "#f4f9fb",
   "description": "Recognize suspicious requests with clear guidance.",
   "icons": [
     {

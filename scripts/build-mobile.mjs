@@ -1,5 +1,9 @@
 import { build } from "esbuild";
-import { cp, mkdir, readdir, writeFile } from "node:fs/promises";
+import { cp, mkdir, readdir, stat, writeFile } from "node:fs/promises";
+const args = process.argv.slice(2);
+if (args.some((arg) => arg !== "--assets-only"))
+  throw Error("Unknown build option");
+const assetsOnly = args.includes("--assets-only");
 const fonts = [
   ["noto-sans", "latin", "en"],
   ["noto-sans-devanagari", "devanagari", "hi,mr"],
@@ -43,14 +47,23 @@ for (const [name, script, codes] of fonts) {
       .join("\n") + "\n";
 }
 await writeFile("frontend/fonts.css", css);
-await build({
-  entryPoints: ["mobile/native-entry.js"],
-  outfile: "frontend/native.js",
-  bundle: true,
-  format: "esm",
-  minify: true,
-  target: "es2022",
-});
+if (assetsOnly) {
+  const bridge = await stat("frontend/native.js");
+  if (!bridge.isFile() || bridge.size === 0)
+    throw Error("Build the native bridge first");
+  console.log(
+    "UI-only sync: reusing frontend/native.js. Native code is NOT rebuilt; use only when bridge source and dependencies are unchanged.",
+  );
+} else {
+  await build({
+    entryPoints: ["mobile/native-entry.js"],
+    outfile: "frontend/native.js",
+    bundle: true,
+    format: "esm",
+    minify: true,
+    target: "es2022",
+  });
+}
 const shell = [
   "/",
   "/phone.html",
@@ -58,11 +71,15 @@ const shell = [
   "/fonts.css",
   "/native.js",
   "/product.js",
+  "/api-client.js",
   "/lifecycle.js",
   "/i18n.js",
   "/asr.js",
   "/manifest.webmanifest",
   "/favicon.svg",
+  "/assets/template-water.webp",
+  "/fonts/template/Inter.ttf",
+  "/fonts/template/Fraunces.ttf",
   "/icons/icon-192.png",
   "/icons/icon-512.png",
 ];
@@ -77,5 +94,5 @@ await mkdir("mobile/web", { recursive: true });
 await cp("frontend", "mobile/web", { recursive: true });
 await cp("frontend/phone.html", "mobile/web/index.html");
 console.log(
-  "Built native bridge, 11 local script fonts, public offline manifest and Android web assets.",
+  "Prepared local script fonts, public offline manifest and Android web assets.",
 );

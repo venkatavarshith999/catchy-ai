@@ -558,3 +558,13 @@ def test_reset_request_rate_limit_and_invalid_input(client):
         json={"email": "one@example.test", "code": "123456", "password": "short"},
     )
     assert response.status_code == 422 and "short" not in response.text
+
+
+def test_health_reports_llm_configuration_without_exposing_key(client, monkeypatch):
+    monkeypatch.setenv("LLM_PROVIDER", "openai")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-private-placeholder")
+    response = client.get("/api/health")
+    assert response.json()["llm"] == {"provider": "openai", "configured": True}
+    assert "test-private-placeholder" not in response.text
+    monkeypatch.delenv("OPENAI_API_KEY")
+    assert client.get("/api/health").json()["llm"]["configured"] is False

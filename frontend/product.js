@@ -1,4 +1,5 @@
 import { createCurrentSession } from "./lifecycle.js";
+import { createApiClient } from "./api-client.js";
 import {
   loadLanguage,
   t,
@@ -7,7 +8,7 @@ import {
   languageInfo,
   languages,
 } from "./i18n.js";
-import { chooseASR, speakWarning } from "./asr.js";
+import { chooseASR, speakWarning, cancelWarning } from "./asr.js";
 const $ = (s, r = document) => r.querySelector(s),
   $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = (v) =>
@@ -30,6 +31,7 @@ const defaultPreferences = () => ({
 });
 const S = {
   user: null,
+  initializing: true,
   page: "home",
   mode: "speaker",
   running: false,
@@ -57,13 +59,25 @@ const S = {
   wake: null,
   latency: null,
   health: null,
+  connection: "checking",
+  connectionError: null,
   error: null,
   alertShown: false,
+  voiceMuted: false,
+  speechController: null,
   invitation: null,
   socket: null,
   pending: new Map(),
 };
 let toastTimer, installEvent;
+const connectionErrors = new Set([
+  "serverError",
+  "connectionLost",
+  "requestTimeout",
+  "serviceUnavailable",
+  "unexpectedResponse",
+  "offline",
+]);
 function notice(key, literal = false) {
   if ($("#danger").open) {
     $("#danger-feedback").hidden = false;
@@ -84,41 +98,55 @@ function notice(key, literal = false) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => $("#notice").classList.remove("show"), 6500);
 }
-const errors = {
-  invalid_reset_code: "resetInvalid",
-  rate_limited: "tooManyRequests",
-  verify_email_required: "verificationNeeded",
-  delivery_not_configured: "providerUnavailable",
-  email_not_configured: "emailUnavailable",
-  alert_cooldown: "cooldown",
-  invalid_invitation: "inviteInvalid",
-  admin_required: "adminOnly",
-  language_unavailable: "planned",
-  sign_in_required: "authNeeded",
-};
-async function api(path, method = "GET", body) {
-  const controller = new AbortController(),
-    timer = setTimeout(() => controller.abort(), 12000);
-  try {
-    const response = await fetch("/api/v2" + path, {
-      method,
-      credentials: "same-origin",
-      signal: controller.signal,
-      headers: { "Content-Type": "application/json", "X-Catchy-Request": "1" },
-      body: body === undefined ? undefined : JSON.stringify(body),
-    });
-    const result = await response.json();
-    if (!response.ok) {
-      const error = Error(errors[result.error] || "error");
-      error.code = result.error;
-      throw error;
+function showConnection() {
+  const banner = $("#connection-status");
+  if (!banner) return;
+  banner.hidden = S.connection === "connected";
+  $("#connection-message").textContent = t(
+    S.connection === "checking"
+      ? "connectionChecking"
+      : S.connectionError || "connectionLost",
+  );
+  $("#connection-retry").disabled = S.connection === "checking";
+  $("#connection-local-help").hidden =
+    !["localhost", "127.0.0.1", "[::1]"].includes(location.hostname) ||
+    S.connection === "checking";
+}
+function updateConnection(state, key = null) {
+  S.connection = state;
+  S.connectionError = key;
+  showConnection();
+}
+const request = createApiClient({ onConnection: updateConnection });
+const api = (path, method = "GET", body) =>
+  request("/api/v2" + path, method, body);
+let connectionCheck;
+async function checkConnection({ quiet = false } = {}) {
+  if (connectionCheck) return connectionCheck;
+  if (!quiet || S.connection !== "connected") updateConnection("checking");
+  connectionCheck = (async () => {
+    try {
+      const health = await request("/api/health", "GET", undefined, {
+        validate: (data) =>
+          data.status === "ok" &&
+          ["sqlite-development", "postgresql"].includes(data.database),
+      });
+      S.health = health;
+      updateConnection("connected");
+      if (connectionErrors.has(S.error)) {
+        S.error = null;
+        if (S.page === "home") home();
+      }
+      return true;
+    } catch (error) {
+      updateConnection("disconnected", error.message);
+      return false;
     }
-    return result;
-  } catch (error) {
-    if (!error.code) throw Error(navigator.onLine ? "serverError" : "offline");
-    throw error;
+  })();
+  try {
+    return await connectionCheck;
   } finally {
-    clearTimeout(timer);
+    connectionCheck = null;
   }
 }
 function button(key, action, kind = "secondary", attributes = "") {
@@ -136,6 +164,13 @@ function heading(title, description, action = "") {
   return `<div class="heading"><div><h1>${esc(t(title))}</h1><p>${esc(t(description))}</p></div>${action}</div>`;
 }
 function modal(html) {
+  if (html.includes('id="form-error"'))
+    html += button(
+      "retryConnection",
+      "retryConnection",
+      "secondary",
+      'id="form-retry" type="button" hidden',
+    );
   $("#modal-body").innerHTML = html;
   translate($("#modal"));
   if (!$("#modal").open) $("#modal").showModal();
@@ -146,10 +181,11 @@ function nav() {
   $("#navigation").innerHTML = pages
     .map(
       (p) =>
-        `<a href="#${p}" class="${S.page === p ? "current" : ""}">${esc(t(p))}</a>`,
+        `<a href="#${p}" class="${S.page === p ? "current" : ""}" ${S.page === p ? 'aria-current="page"' : ""}>${icon(p)}<span>${esc(t(p))}</span></a>`,
     )
     .join("");
   $("#account").textContent = S.user ? S.user.name : t("signIn");
+  $("#account").disabled = S.initializing || S.running;
   $("#language").innerHTML = languages
     .map(
       (l) =>
@@ -159,6 +195,7 @@ function nav() {
   document.body.classList.toggle("contrast", !!S.preferences.high_contrast);
   document.body.classList.toggle("large", !!S.preferences.large_text);
   translate();
+  showConnection();
 }
 function go(page) {
   if (S.running && page !== "home") {
@@ -177,6 +214,7 @@ function go(page) {
   ].includes(page)
     ? page
     : "home";
+  document.body.classList.toggle("is-home", S.page === "home");
   nav();
   render();
   window.scrollTo({ top: 0 });
@@ -195,16 +233,70 @@ function render() {
 }
 function icon(name) {
   const paths = {
-    speaker: "M5 9h4l5-4v14l-5-4H5z M18 8c3 2 3 6 0 8",
-    typed: "M4 5h16v14H4z M7 9h10 M7 13h7",
-    demo: "M8 5l11 7-11 7z",
+    home: "M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6z M9 12l2 2 4-4",
+    speaker:
+      "M9 5a3 3 0 0 1 6 0v7a3 3 0 0 1-6 0z M5 10v2a7 7 0 0 0 14 0v-2 M12 19v3 M8 22h8",
+    typed: "M4 4h16v13H9l-5 4z M8 8h8 M8 12h5",
+    demo: "M9 6l10 6-10 6z M4 5v14",
+    history: "M4 8a9 9 0 1 1 0 8 M4 3v5h5 M12 7v5l3 2",
+    circle:
+      "M9 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M2 21v-2a7 7 0 0 1 14 0v2 M17 4a4 4 0 0 1 0 8 M19 15a5 5 0 0 1 3 4v2",
+    settings: "M4 7h16 M4 17h16 M8 4v6 M16 14v6",
+    evaluation: "M4 20V10 M12 20V4 M20 20v-8",
+    voice: "M4 9h4l5-4v14l-5-4H4z M17 8a7 7 0 0 1 0 8 M20 5a11 11 0 0 1 0 14",
+    arrow: "M5 12h14 M13 6l6 6-6 6",
+    lock: "M7 10V7a5 5 0 0 1 10 0v3 M5 10h14v11H5z M12 14v3",
   };
-  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="${paths[name]}"/></svg>`;
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[name] || paths.home}"/></svg>`;
 }
 function home() {
-  const status = S.running ? "listening" : S.error ? "stopped" : "ready";
-  $("#content").innerHTML =
-    `${S.error ? `<div class="banner error" role="alert">${esc(t(S.error))}</div>` : ""}<div class="home-grid"><section class="intro"><p class="eyebrow">${esc(t("caption"))}</p><h1>${esc(t("tagline"))}</h1><p>${esc(t("intro"))}</p><div class="trust-line"><span aria-hidden="true">✓</span>${esc(t("secure"))}</div></section><section class="protection-card" aria-label="${esc(t("home"))}"><div class="card-top"><strong>${esc(t("home"))}</strong><span class="chip">${esc(t(languageInfo().status === "preview" ? "preview" : "beta"))}</span></div><div class="status-orb ${S.running ? "listening" : ""}" aria-hidden="true">${S.running ? "◉" : "✓"}</div><h2 id="live-status" class="status-title center" role="status">${esc(t(status))}</h2>${S.running ? button("stop", "stop", "primary start-button wide") : button("start", "start", "primary start-button wide")}<div class="mode-grid" role="group" aria-label="${esc(t("mode"))}">${["speaker", "typed", "demo"].map((m) => `<button data-mode="${m}" class="${S.mode === m ? "selected" : ""}" ${S.running ? "disabled" : ""}>${icon(m)}${esc(t(m))}</button>`).join("")}</div>${S.mode === "demo" ? `${!demos[language] ? `<p class="support">${esc(t("englishDemo"))}</p>` : ""}<div class="actions">${button("demoScam", "scam")}${button("demoGenuine", "genuine")}</div>` : ""}${S.mode === "typed" ? `<form id="turn-form"><label>${esc(t("message"))}<textarea name="text" maxlength="1500" required ${!S.running ? "disabled" : ""}></textarea></label><button class="primary wide" ${!S.running ? "disabled" : ""}>${esc(t("analyze"))}</button></form>` : ""}<p class="support">${esc(t("phoneNote"))}</p>${!S.user ? `<p class="support">${esc(t("guestNotice"))}</p>` : ""}<div id="live-result" aria-live="polite"></div></section></div><div id="session-details"></div><section class="steps">${[1, 2, 3].map((i) => `<article class="step"><span>0${i}</span><h3>${esc(t("step" + i))}</h3><p>${esc(t("step" + i + "Text"))}</p></article>`).join("")}</section>`;
+  const status = S.initializing
+    ? "loading"
+    : S.running
+      ? "listening"
+      : S.error
+        ? "stopped"
+        : "ready";
+  const modeTitle = {
+    speaker: "listenTitle",
+    typed: "textTitle",
+    demo: "practiceTitle",
+  };
+  const modeHelp = {
+    speaker: "listenHelp",
+    typed: "textHelp",
+    demo: "practiceHelp",
+  };
+  $("#content").innerHTML = `
+    <div class="home-view ${S.running ? "session-active" : ""}">
+    <section class="template-hero"><div class="hero-inner"><p class="eyebrow">${esc(t("caption"))}</p><h1>${esc(t("heroLead"))} <span>${esc(t("heroAccent"))}</span></h1><p class="hero-description">${esc(t("intro"))}</p><div class="actions hero-actions"><button class="primary" data-open-mode="speaker">${esc(t("start"))}${icon("arrow")}</button><button class="secondary" data-open-mode="typed">${esc(t("typed"))}</button></div><p class="hero-note">${icon("lock")}${esc(t("secure"))}<span aria-hidden="true">·</span>${esc(t("honestStatus"))}</p></div></section>
+    <section class="section-band check-band" aria-labelledby="check-heading"><div class="section-inner"><div class="section-heading"><p class="eyebrow">${esc(t("conversationCheck"))}</p><h2 id="check-heading">${esc(t("checkHeading"))}</h2><p>${esc(t("checkIntro"))}</p></div>
+    ${S.error ? `<div class="banner error" role="alert">${esc(t(S.error))}</div>` : ""}
+    <div class="check-layout" id="check-workspace"><div class="check-options">
+      <div class="mode-grid" role="group" aria-label="${esc(t("mode"))}">${["speaker", "typed", "demo"].map((m, i) => `<button data-mode="${m}" aria-pressed="${S.mode === m}" class="${S.mode === m ? "selected" : ""}" ${S.running ? "disabled" : ""}><span class="mode-name">${icon(m)}${esc(t(m))}</span><span class="mode-number" aria-hidden="true">0${i + 1}</span></button>`).join("")}</div>
+      <div class="capability-note">${icon("home")}<div><strong>${esc(t("honestStatus"))}</strong><p>${esc(t("honestHelp"))}</p></div></div></div>
+      <section class="protection-card" aria-label="${esc(t("home"))}">
+        <div class="protection-stage ${S.running ? "is-listening" : ""}">
+          <div class="card-top"><span class="section-icon">${icon(S.mode)}</span><span id="live-status" class="state-pill" role="status"><span class="state-dot" aria-hidden="true"></span>${esc(t(status))}</span></div>
+          <h3>${esc(t(modeTitle[S.mode]))}</h3><p class="stage-description">${esc(t(modeHelp[S.mode]))}</p>
+          ${S.running ? button("stop", "stop", "primary start-button wide") : button(S.mode === "speaker" ? "start" : "beginCheck", "start", "primary start-button wide", S.initializing ? "disabled" : "")}
+        </div>
+        <div class="session-controls">
+          ${S.running ? button(S.voiceMuted ? "voiceMuted" : "muteWarning", "muteWarning", "secondary wide", S.voiceMuted ? "disabled" : "") : ""}
+          ${S.mode === "demo" ? `${!demos[language] ? `<p class="support">${esc(t("englishDemo"))}</p>` : ""}<div class="actions">${button("demoScam", "scam", "secondary", S.running ? "disabled" : "")}${button("demoGenuine", "genuine", "secondary", S.running ? "disabled" : "")}</div>` : ""}
+          ${S.mode === "typed" ? `<form id="turn-form"><label>${esc(t("message"))}<textarea name="text" maxlength="1500" required ${!S.running ? "disabled" : ""} placeholder="${esc(t("textPlaceholder"))}"></textarea></label><button class="primary wide" ${!S.running ? "disabled" : ""}>${esc(t("analyze"))}</button></form>` : ""}
+          <p class="support">${esc(t("phoneNote"))}</p>${!S.user ? `<p class="guest-note">${esc(t("guestNotice"))}</p>` : ""}<div id="live-result" aria-live="polite"></div>
+        </div>
+      </section>
+    </div>
+    <div id="session-details"></div></div></section>
+    <section class="section-band guide-band"><div class="section-inner guide-layout"><div class="section-heading"><p class="eyebrow">${esc(t("learn"))}</p><h2>${esc(t("guideTitle"))}</h2><p>${esc(t("guideCaption"))}</p></div><div class="steps">${[1, 2, 3, 4].map((i) => `<article class="step"><span class="step-number">0${i}</span><div><h3>${esc(t("step" + i))}</h3><p>${esc(t("step" + i + "Text"))}</p></div></article>`).join("")}</div></div></section>
+    <section class="section-band companion-band"><div class="section-inner"><div class="section-heading"><p class="eyebrow">${esc(t("companionEyebrow"))}</p><h2>${esc(t("companionTitle"))}</h2><p>${esc(t("companionIntro"))}</p></div><div class="companion-grid">
+      <section class="companion-card voice-card"><div class="section-icon">${icon("voice")}</div><h3>${esc(t("voiceTitle"))}</h3><p>${esc(t("voiceHelp"))}</p><div class="language-line"><strong>${esc(languageInfo().name)}</strong><a href="#settings">${esc(t("settings"))}${icon("arrow")}</a></div>${button("hearWarning", "previewVoice", "secondary wide", S.running ? "disabled" : "")}</section>
+      <a class="companion-card" href="#circle"><div class="section-icon">${icon("circle")}</div><h3>${esc(t("circleTitle"))}</h3><p>${esc(t("circleHelp"))}</p><span class="card-link">${esc(t("circle"))}${icon("arrow")}</span></a>
+      <a class="companion-card" href="#history"><div class="section-icon">${icon("history")}</div><h3>${esc(t("historyTitle"))}</h3><p>${esc(t("historyHelp"))}</p><span class="card-link">${esc(t("history"))}${icon("arrow")}</span></a>
+    </div></div></section>
+    <section class="section-band faq-band"><div class="section-inner faq-layout"><div class="section-heading"><p class="eyebrow">${esc(t("faqEyebrow"))}</p><h2>${esc(t("faqTitle"))}</h2></div><div class="faq-list">${[1, 2, 3].map((i) => `<details><summary>${esc(t("faq" + i + "Q"))}<span aria-hidden="true">+</span></summary><p>${esc(t("faq" + i + "A"))}</p></details>`).join("")}</div></div></section></div>`;
   updateResults();
 }
 function updateResults() {
@@ -217,6 +309,16 @@ function updateResults() {
     `<section class="panel"><h2>${esc(t("signals"))}</h2>${result.signals.map((s) => `<div class="evidence"><strong>${esc(t("signal_" + s.key))}</strong><p>“${esc(s.quote)}”</p></div>`).join("") || `<p>${esc(t("low"))}</p>`}<p class="support">${esc(t("supportNote"))}</p>${!S.running && S.user && S.result?.level === "high" && S.preferences.alert_opt_in ? button("sendAlert", "sendAlert", "primary") : ""}<div class="transcript">${S.turns.map((turn) => `<div class="turn"><p>${esc(turn)}</p></div>`).join("")}</div></section>`;
 }
 function askConsent() {
+  if (S.initializing) {
+    notice("loading");
+    return;
+  }
+  if (S.running) return;
+  if (S.mode === "speaker" && !S.user) {
+    authForm();
+    notice("microphoneSignIn");
+    return;
+  }
   if (languageInfo().status === "preview") {
     notice("preview");
     return;
@@ -231,11 +333,23 @@ function askConsent() {
   );
 }
 async function start() {
+  if (S.initializing) {
+    notice("loading");
+    return;
+  }
+  if (S.running) return;
+  if (S.mode === "speaker" && !S.user) {
+    authForm();
+    notice("microphoneSignIn");
+    return;
+  }
   if (!$("[name=consent]")?.checked) {
     notice("consentCheck");
     return;
   }
   $("#modal").close();
+  cancelSpeech();
+  S.voiceMuted = false;
   S.error = null;
   S.turns = [];
   S.result = null;
@@ -245,8 +359,6 @@ async function start() {
   const generation = S.generation;
   S.queue = [];
   try {
-    if (S.mode === "speaker" && S.preferences.asr === "selfhost" && !S.user)
-      throw Error("authNeeded");
     const call = S.user
       ? await createCurrentSession(
           () =>
@@ -287,12 +399,13 @@ async function start() {
       if (generation !== S.generation || !S.running) return;
       S.asr = provider;
       await provider.start({
+        callId: S.call.id,
         language: languageInfo().speech,
         onText: (text, ended) => {
-          if (generation === S.generation) enqueue(text, ended);
+          if (S.running && generation === S.generation) enqueue(text, ended);
         },
         onError: (key) => {
-          if (generation === S.generation) fail(key);
+          if (S.running && generation === S.generation) fail(key);
         },
       });
       if (generation !== S.generation || !S.running) {
@@ -317,11 +430,17 @@ function resetSilence() {
   }, 25000);
 }
 async function fail(key) {
+  const generation = S.generation + 1;
   await stop(false);
+  if (generation !== S.generation) return;
   S.error = [
     "permissionDenied",
     "offline",
     "serverError",
+    "connectionLost",
+    "requestTimeout",
+    "serviceUnavailable",
+    "unexpectedResponse",
     "speechError",
     "unsupported",
     "background",
@@ -334,35 +453,42 @@ async function fail(key) {
   if (S.page === "home") home();
   notice(S.error);
 }
-async function stop(show = true) {
+async function stop(show = true, { withdraw = false } = {}) {
   const call = S.call;
   S.running = false;
+  cancelSpeech();
   clearTimeout(S.timer);
   clearTimeout(S.silence);
   S.asr?.stop();
   S.asr = null;
   S.queue = [];
   S.generation++;
+  const generation = S.generation;
+  if ($("#danger").open) $("#danger").close();
   S.socket?.close();
   S.socket = null;
   for (const job of S.pending.values()) job.reject(Error("serverError"));
   S.pending.clear();
-  try {
-    await S.wake?.release();
-  } catch {}
+  const wake = S.wake;
   S.wake = null;
   try {
-    const native = await import("./native.js");
-    await native.allowSleep();
+    await wake?.release();
   } catch {}
-  window.speechSynthesis?.cancel();
-  if ($("#danger").open) $("#danger").close();
+  try {
+    const native = await import("./native.js");
+    if (generation === S.generation) await native.allowSleep();
+  } catch {}
   if (call && S.user)
     try {
-      await api(`/calls/${call.id}/finish`, "POST", {});
+      await api(
+        `/calls/${call.id}/${withdraw ? "withdraw" : "finish"}`,
+        "POST",
+        {},
+      );
     } catch {
-      S.error = "serverError";
+      if (generation === S.generation) S.error = "serverError";
     }
+  if (generation !== S.generation) return;
   if (S.page === "home") home();
   if (show) notice("stopped");
 }
@@ -373,6 +499,7 @@ function connectLive() {
   );
   S.socket = ws;
   ws.onmessage = (e) => {
+    if (!S.running || S.socket !== ws) return;
     const data = JSON.parse(e.data);
     if (data.error) {
       for (const job of S.pending.values()) job.reject(Error("serverError"));
@@ -406,8 +533,9 @@ function enqueue(text, ended = null) {
 async function drain() {
   if (S.busy) return;
   S.busy = true;
+  const drainGeneration = S.generation;
   try {
-    while (S.running && S.queue.length) {
+    while (S.running && drainGeneration === S.generation && S.queue.length) {
       const item = S.queue.shift(),
         generation = S.generation,
         request_id = crypto.randomUUID();
@@ -444,28 +572,76 @@ async function drain() {
       S.result = result;
       S.latency = item.ended === null ? null : performance.now() - item.ended;
       updateResults();
-      if (result.level === "high" && !S.alertShown) await warn();
+      if (result.level === "high" && !S.alertShown) {
+        // Playback must not hold up analysis of subsequent conversation turns.
+        void warn().catch(() => {
+          if (S.running && generation === S.generation) {
+            $("#voice-fallback").hidden = false;
+            $("#voice-fallback").textContent = t("noVoice");
+          }
+        });
+      }
     }
   } catch (error) {
-    await fail(error.message);
+    if (S.running && drainGeneration === S.generation)
+      await fail(error.message);
   } finally {
     S.busy = false;
+    if (S.running && S.queue.length && drainGeneration !== S.generation)
+      drain();
   }
 }
+function cancelSpeech() {
+  S.speechController?.abort();
+  S.speechController = null;
+  cancelWarning();
+}
+function muteWarning() {
+  S.voiceMuted = true;
+  cancelSpeech();
+  $("#voice-fallback").hidden = false;
+  $("#voice-fallback").textContent = t("voiceMuted");
+  $("#danger-mute").disabled = true;
+  if (S.page === "home") home();
+}
 async function warn() {
+  const generation = S.generation;
+  if (!S.running) return;
+  cancelSpeech();
+  const controller = new AbortController();
+  S.speechController = controller;
+  const current = () =>
+    S.running &&
+    generation === S.generation &&
+    S.speechController === controller;
   $("#danger-feedback").hidden = true;
   S.alertShown = true;
+  $("#voice-fallback").hidden = false;
+  $("#voice-fallback").textContent = t(
+    S.voiceMuted || !S.preferences.spoken_warnings
+      ? "voiceMuted"
+      : "voicePending",
+  );
+  $("#danger-mute").disabled = S.voiceMuted || !S.preferences.spoken_warnings;
   $("#danger").showModal();
   navigator.vibrate?.([180, 90, 180]);
   try {
     const native = await import("./native.js");
-    await native.haptic();
+    if (current()) await native.haptic();
   } catch {}
-  if (S.preferences.spoken_warnings) {
-    const spoken = await speakWarning(t("warning"), languageInfo().speech);
+  if (!current()) return;
+  if (S.preferences.spoken_warnings && !S.voiceMuted) {
+    const spoken = await speakWarning(t("warning"), languageInfo().speech, {
+      signal: controller.signal,
+    });
+    if (!current()) return;
     $("#voice-fallback").hidden = spoken;
+    if (!spoken) $("#voice-fallback").textContent = t("noVoice");
   }
-  eventCount("alert_shown");
+  if (current()) {
+    S.speechController = null;
+    eventCount("alert_shown");
+  }
 }
 async function eventCount(event) {
   if (!S.preferences.analytics) return;
@@ -625,6 +801,14 @@ function settings() {
       )}<label>${esc(t("retentionDays"))}<input type="number" name="retention_days" min="1" max="90" value="${p.retention_days}"></label><label>${esc(t("provider"))}<select name="asr"><option value="browser" ${p.asr === "browser" ? "selected" : ""}>${esc(t("browserAsr"))}</option><option value="selfhost" ${p.asr === "selfhost" ? "selected" : ""}>${esc(t("selfhostAsr"))}</option></select></label><p>${esc(t("asrNotice"))}</p><div class="toolbar"><button class="primary">${esc(t("save"))}</button></div></section></form><section class="panel"><h2>${esc(t("account"))}</h2><p>${esc(S.user?.email || t("guest"))}</p><p>${esc(t(S.user?.verified ? "verified" : "notVerified"))}</p><div class="toolbar">${S.user ? button("verifyEmail", "verifyEmail") + button("signOut", "logout") + button("deleteAll", "deleteAccount", "secondary danger-text") : button("signIn", "account", "primary")}</div></section><section class="panel"><h2>${esc(t("languageSupport"))}</h2><p>${esc(t("humanReview"))}</p><div class="toolbar">${languages.map((l) => `<span class="chip">${esc(l.name)} · ${esc(t(l.status === "beta" ? "beta" : l.status === "preview" ? "preview" : "planned"))}</span>`).join("")}</div></section>`;
 }
 function authForm(register = false) {
+  if (S.initializing) {
+    notice("loading");
+    return;
+  }
+  if (S.running) {
+    notice("phoneNote");
+    return;
+  }
   modal(
     `<h2>${esc(t(register ? "register" : "signIn"))}</h2><p>${esc(t("signinPrivacy"))}</p><form id="auth-form" data-register="${register}">${register ? field("name", "name", "text", "", 'required minlength="2" maxlength="80" autocomplete="name"') : ""}${field("email", "email", "email", "", 'required autocomplete="email"')}${field("password", "password", "password", "", 'required minlength="10" maxlength="128" autocomplete="' + (register ? "new-password" : "current-password") + '"')}<p id="form-error" class="form-error" role="alert"></p><button class="primary wide">${esc(t(register ? "register" : "signIn"))}</button></form><div class="actions">${button(register ? "signIn" : "register", register ? "loginForm" : "registerForm")}${button("guest", "close")}${!register ? button("forgotPassword", "forgotPassword") : ""}</div><p class="support">${esc(t("accountLocal"))}</p>`,
   );
@@ -719,21 +903,84 @@ async function requestAlert(id, test = false) {
   }
 }
 document.addEventListener("click", async (event) => {
-  const element = event.target.closest("[data-action],[data-mode]");
+  const element = event.target.closest(
+    "[data-action],[data-mode],[data-open-mode]",
+  );
   if (!element) return;
   const action = element.dataset.action,
     id = element.dataset.id;
   try {
+    if (element.dataset.openMode) {
+      if (!S.running) {
+        S.mode = element.dataset.openMode;
+        home();
+      }
+      $(".start-button")?.scrollIntoView({ block: "center" });
+      $(".start-button")?.focus();
+      return;
+    }
     if (element.dataset.mode) {
       if (!S.running) {
         S.mode = element.dataset.mode;
         home();
+        $("[data-mode].selected")?.focus();
       }
       return;
     }
+    if (action === "previewVoice" && !S.running) {
+      cancelSpeech();
+      const controller = new AbortController();
+      const generation = S.generation;
+      S.speechController = controller;
+      const spoken = await speakWarning(t("warning"), languageInfo().speech, {
+        signal: controller.signal,
+      });
+      if (
+        S.speechController === controller &&
+        generation === S.generation &&
+        !S.running
+      ) {
+        S.speechController = null;
+        if (!spoken) notice("noVoice");
+      }
+    }
+    if (action === "muteWarning") muteWarning();
     if (action === "start") askConsent();
+    if (action === "retryConnection") {
+      if (S.initializing) {
+        notice("loading");
+        return;
+      }
+      if (S.running) {
+        await checkConnection();
+        return;
+      }
+      S.initializing = true;
+      nav();
+      render();
+      try {
+        if (!(await checkConnection())) return;
+        try {
+          await refreshUser();
+        } catch (error) {
+          if (error.code !== "sign_in_required") throw error;
+          S.user = null;
+          S.calls = [];
+          S.contacts = [];
+        }
+        if ($("#form-retry") && !$("#form-retry").hidden) {
+          $("#form-retry").hidden = true;
+          if ($("#form-error")) $("#form-error").textContent = "";
+        }
+        notice("connected");
+      } finally {
+        S.initializing = false;
+        nav();
+        render();
+      }
+    }
     if (action === "consent") await start();
-    if (action === "stop") await stop();
+    if (action === "stop") await stop(true, { withdraw: true });
     if (action === "close") $("#modal").close();
     if (action === "account" || action === "loginForm") authForm();
     if (action === "registerForm") authForm(true);
@@ -854,10 +1101,16 @@ document.addEventListener("click", async (event) => {
 });
 document.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (S.initializing) {
+    notice("loading");
+    return;
+  }
   const form = event.target,
     values = Object.fromEntries(new FormData(form)),
     submit = $("button[type=submit],button.primary", form);
   if (submit) submit.disabled = true;
+  if ($("#form-error", form)) $("#form-error", form).textContent = "";
+  if ($("#form-retry")) $("#form-retry").hidden = true;
   try {
     if (form.id === "auth-form") {
       const result = await api(
@@ -948,8 +1201,16 @@ document.addEventListener("submit", async (event) => {
       notice("saved");
     }
   } catch (error) {
-    if ($("#form-error")) $("#form-error").textContent = t(error.message);
-    else notice(error.message);
+    if ($("#form-error")) {
+      const recoverable = connectionErrors.has(error.message);
+      $("#form-error").textContent =
+        t(error.message) +
+        (recoverable &&
+        ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname)
+          ? " " + t("localConnectionHelp")
+          : "");
+      if ($("#form-retry")) $("#form-retry").hidden = !recoverable;
+    } else notice(error.message);
   } finally {
     if (submit) submit.disabled = false;
   }
@@ -959,6 +1220,7 @@ $("#account").addEventListener("click", () =>
 );
 $("#language").addEventListener("change", async (event) => {
   if (S.running) await stop(false);
+  cancelSpeech();
   await loadLanguage(event.target.value);
   nav();
   render();
@@ -966,9 +1228,10 @@ $("#language").addEventListener("change", async (event) => {
 });
 $("#danger-stop").addEventListener("click", async () => {
   eventCount("alert_dismissed");
-  await stop();
+  await stop(true, { withdraw: true });
 });
 $("#danger-call").addEventListener("click", callTrusted);
+$("#danger-mute").addEventListener("click", muteWarning);
 $("#danger").addEventListener("cancel", (event) => event.preventDefault());
 document.addEventListener("input", (event) => {
   if (event.target.id === "search") filterHistory();
@@ -989,6 +1252,7 @@ window.addEventListener("catchy-background", () => {
   if (S.running) fail("background");
 });
 window.addEventListener("offline", () => {
+  updateConnection("disconnected", "offline");
   if (S.running) fail("offline");
   else {
     S.error = "offline";
@@ -996,16 +1260,18 @@ window.addEventListener("offline", () => {
   }
 });
 window.addEventListener("online", () => {
-  S.error = null;
-  if (S.page === "home") home();
+  checkConnection();
 });
 document.addEventListener("visibilitychange", () => {
   if (document.hidden && S.running) fail("background");
+  if (!document.hidden && !S.running) checkConnection();
 });
 window.addEventListener("pagehide", () => {
+  S.running = false;
+  S.generation++;
+  cancelSpeech();
   S.asr?.stop();
   S.wake?.release();
-  window.speechSynthesis?.cancel();
 });
 window.addEventListener("beforeinstallprompt", (event) => {
   event.preventDefault();
@@ -1028,18 +1294,19 @@ async function boot() {
       };
     } catch {}
     S.invitation = sessionStorage.getItem("catchy-invitation");
+    go("home");
     try {
-      S.health = await fetch("/api/health").then((r) => {
-        if (!r.ok) throw Error();
-        return r.json();
-      });
-      try {
-        await refreshUser();
-      } catch (error) {
-        if (error.code !== "sign_in_required") throw error;
+      if (await checkConnection()) {
+        try {
+          await refreshUser();
+        } catch (error) {
+          if (error.code !== "sign_in_required") throw error;
+        }
       }
-    } catch {
-      S.error = "serverError";
+    } catch (error) {
+      updateConnection("disconnected", error.message);
+    } finally {
+      S.initializing = false;
     }
     const hash = location.hash.slice(1);
     if (hash.startsWith("invite=")) {
@@ -1061,6 +1328,11 @@ async function boot() {
     if ("serviceWorker" in navigator)
       navigator.serviceWorker.register("/sw.js").catch(() => {});
     window.speechSynthesis?.getVoices();
+    // Read-only, bounded health checks detect a stopped local backend while the cached shell remains visible.
+    setInterval(() => {
+      if (!document.hidden && !S.running && navigator.onLine)
+        checkConnection({ quiet: true });
+    }, 30000);
   } catch {
     document.getElementById("content").textContent =
       "Catchy could not load. Restart the server and reload.";

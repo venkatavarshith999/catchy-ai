@@ -12,13 +12,14 @@ Mutations require `Origin: <APP_ORIGIN>` and `X-Catchy-Request: 1`; authenticate
 | POST | `/logout` | Invalidate current session |
 | POST | `/verify/request`, `/verify/confirm` | Verified email ownership, rate-limited expiring codes |
 | POST | `/preferences` | Save a complete preferences object; omitted fields take defaults |
-| POST | `/guest/analyze` | Consented temporary analysis, no history |
+| POST | `/guest/analyze` | Consented rules-only temporary analysis, no history or model calls |
 | GET/POST | `/calls` | Owned session list / create |
 | GET/DELETE | `/calls/{id}` | Owned session detail / deletion |
 | POST | `/calls/{id}/turns` | Text, request_id and optional timing |
 | POST | `/calls/{id}/finish` | Stop and clear live context |
+| POST | `/calls/{id}/withdraw` | Withdraw the owned session and clear live context (idempotent) |
 | WS | `/live/{id}` | Authenticated typed/speech text updates |
-| WS | `/asr?language=hi-IN` | Bounded binary WebM relay to configured private ASR |
+| WS | `/asr?call_id=<owned-speaker-session>&language=hi-IN` | Bounded binary WebM relay to configured private ASR |
 | GET/POST | `/contacts` | Outgoing/incoming relationships / create invitation |
 | POST | `/contacts/accept` | Matching verified recipient accepts token and supplies own phone |
 | POST | `/contacts/{id}/alerts` | Change the caller's side of mutual consent |
@@ -43,3 +44,11 @@ Risk results contain `level`, explainable signals, model status and text-engine 
 When `ALERT_WEBHOOK_URL` is configured it must be HTTPS. The POST carries `Authorization: Bearer <ALERT_WEBHOOK_TOKEN>` and the routing/incident object implemented in `backend/notifications.py`. Incident fields are **risk, time and language only**. Recipient address is separately required for delivery. No call ID, speaker content, transcript or audio is sent. Return a 2xx status only after accepting the request. Provider acceptance is not delivery confirmation; no automatic retry occurs after uncertain delivery.
 
 Invitation links are copied and shared by the user. The app does not automatically send invitations. A recipient's phone number is self-asserted during verified-email acceptance, not independently SMS-verified.
+
+## Microphone session authorization
+
+The ASR relay requires an authenticated owner, exact allowed origin, an active unexpired speaker session with live context, and its matching speech language. Authorization is checked before connecting upstream, on audio/transcript transfer, and by an idle-stream watcher. Logout, withdrawal, expiry and deletion close the stream. Already transmitted provider work cannot be recalled.
+
+Withdrawal is idempotent. Finishing a withdrawn session preserves its withdrawn status; inactive sessions reject new text, including duplicate request IDs. Guest text and practice remain rules-only even when a cloud model is configured. Microphone capture requires sign-in in the UI.
+
+These checks enforce current session state; durable provider-specific consent records are still planned. See MASTER-BUILD-PLAN.md.

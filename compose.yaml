@@ -8,6 +8,11 @@ services:
       DATABASE_URL: postgresql+psycopg://catchy:${POSTGRES_PASSWORD:-catchy-local-only}@database:5432/catchy
       REDIS_URL: redis://cache:6379/0
       LLM_PROVIDER: ${LLM_PROVIDER:-rules}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.1-flash-lite}
+      LLM_TIMEOUT: ${LLM_TIMEOUT:-}
       OLLAMA_URL: ${OLLAMA_URL:-http://host.docker.internal:11434}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
       ASR_WS_URL: ${ASR_WS_URL:-}

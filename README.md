@@ -4,15 +4,22 @@ A multilingual conversation-safety companion for older adults and their families
 
 The product has a phone-first interface, a responsive family workspace, a FastAPI service, persistent accounts, consented contacts, optional speech/model providers, and release automation. It preserves the original prototype in separate legacy modules.
 
+Current build: [architecture and phased plan](docs/MASTER-BUILD-PLAN.md), [verified safety increment and remaining work](docs/MASTER-PHASE-RESULTS.md), and [SQLite recovery](docs/RECOVERY.md).
+
 ## Start on Windows
 
 1. Extract the entire ZIP to a normal folder.
 2. Install Python 3.11 or newer.
-3. Double-click **START-WINDOWS.bat**. The first run needs internet to install dependencies.
-4. Wait for `Catchy AI ready: http://localhost:8000` and the browser to open.
-5. **Keep that terminal window open.** Closing it stops the website.
+3. Double-click **START-HERE.bat** directly in Windows. Choose Gemini, rules-only (no key), or OpenAI.
+4. Enter a provider key at the hidden prompt if requested. The first setup needs internet; later launches skip installation when the installed runtime matches the requirements.
+5. Wait for **Catchy AI local HTTP checks passed** and the browser to open. Use the exact address printed in the terminal; it normally starts with `http://127.0.0.1:8000`.
+6. **Keep that terminal window open.** Closing it stops the website.
 
-Do not open the HTML file directly. `localhost refused to connect` means the server is not listening; rerun the launcher and read its error output. If port 8000 is occupied, set `PORT=8001` in your terminal before starting. The launcher uses the same origin and port for the app.
+The launcher checks both the HTML page and `/api/health` before opening the browser. If the default port is occupied, it selects an available port from 8000–8010 and prints the new address. Explicit PORT or APP_ORIGIN settings are respected and disable automatic fallback. No unrelated process is stopped.
+
+A browser timeout can still occur when an isolated coding runner starts a server that the Windows browser cannot reach. Local HTTP checks only prove reachability inside the launcher's environment. Run **START-HERE.bat from Windows Explorer**, not inside that runner, in this case. Do not open the HTML file directly or keep reloading an old port. See [Windows startup troubleshooting](docs/WINDOWS-STARTUP.md).
+
+The existing START-GEMINI.bat, START-OPENAI.bat and START-WINDOWS.bat shortcuts remain available. `START-WINDOWS.bat --rules --check` verifies startup and stops without opening the browser; `--no-browser` runs the server and prints its address.
 
 On macOS/Linux: `sh start.sh`. To run without opening a browser:
 
@@ -24,7 +31,15 @@ python -m pip install -r requirements.txt
 python -m uvicorn backend.product:app --host 127.0.0.1 --port 8000 --no-access-log
 ```
 
-Open `http://localhost:8000` exactly; origin protection intentionally rejects mismatched hosts. Local development uses SQLite and bounded in-memory live context. PostgreSQL and Redis are provided by `docker compose up --build`; Docker must be installed and running.
+For the manual uvicorn command above, open `http://localhost:8000` exactly; origin protection intentionally rejects mismatched hosts. For the launcher, use its printed address. Local development uses SQLite and bounded in-memory live context. PostgreSQL and Redis are provided by `docker compose up --build`; Docker must be installed and running.
+
+## Enable Gemini
+
+Double-click **START-GEMINI.bat** and enter your Gemini key at the hidden prompt. The backend uses Gemini for optional contextual analysis and retains rules on provider failure. Keys are not saved to files. See [Gemini setup](docs/GEMINI.md).
+
+## Enable OpenAI
+
+Create a key in your OpenAI account, then double-click **START-OPENAI.bat** and paste it into the hidden terminal prompt. The key stays in the server process environment and is not saved to files. Model connectivity is checked during analysis; failures retain rules-only protection. See [OpenAI setup](docs/OPENAI.md) for billing, deployment, privacy and troubleshooting. n8n is not required.
 
 ## Try it in three minutes
 
@@ -41,7 +56,7 @@ Email verification and **Forgot password?** recovery use configured SMTP. Reset 
 | Phone experience | Large controls, consent, simple risk states, two-action danger screen, spoken warning fallback, haptics, wake lock, explicit failure states |
 | Family workspace | Session filters, evidence timeline when retained, metadata export, deletion, trusted circle, preferences |
 | Accounts | Email/password sessions, email verification, password recovery, user/contact/admin roles, ownership checks, account deletion |
-| Detection | Shared rules with native-script and romanized lexicons; optional bounded Ollama refinement; action-request gating and one warning per call |
+| Detection | Shared rules with native-script and romanized lexicons; optional bounded Gemini, OpenAI or Ollama refinement; action-request gating and one warning per call |
 | Speech | Browser recognition, Android speech bridge, optional self-hosted Whisper WebSocket worker |
 | Privacy | No application raw-audio storage, redaction before model requests, opt-in transcript retention, expiring live memory, content-free event logging |
 | Operations | PostgreSQL/Redis Compose, HTTPS proxy configuration, health/metrics, optional error webhook, tests, dependency scanning, source packaging and release workflows |

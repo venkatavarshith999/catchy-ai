@@ -4,11 +4,12 @@
   "private": true,
   "description": "Catchy AI multilingual conversation-safety product",
   "scripts": {
-    "check": "node --check frontend/product.js && node --check frontend/asr.js && node --check frontend/i18n.js && node --check frontend/sw.js && node tests/test_frontend.cjs && node tests/test_asr.mjs && node tests/test_lifecycle.mjs",
+    "check": "node --check frontend/product.js && node --check frontend/asr.js && node --check frontend/i18n.js && node --check frontend/sw.js && node tests/test_frontend.cjs && node tests/test_asr.mjs && node tests/test_lifecycle.mjs && node tests/test_product_ui.mjs && node tests/test_api_client.mjs",
     "format": "prettier --write frontend mobile/native-entry.js tests/*.mjs scripts/*.mjs *.json .github/workflows/*.yml",
     "format:check": "prettier --check frontend mobile/native-entry.js tests/*.mjs scripts/*.mjs *.json .github/workflows/*.yml",
     "build": "node scripts/build-mobile.mjs",
-    "android:sync": "npm run build && cap sync android"
+    "android:sync": "npm run build && cap sync android",
+    "android:sync-ui": "node scripts/build-mobile.mjs --assets-only && cap sync android"
   },
   "devDependencies": {
     "@capacitor/cli": "8.4.3",

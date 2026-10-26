@@ -10,7 +10,7 @@ flowchart LR
     Relay --> Whisper[Optional private Whisper worker]
     Whisper -->|Redacted text| API
     API --> Rules[Multilingual action-gated rules]
-    Rules --> LLM[Optional Ollama refinement]
+    Rules --> LLM[Optional Gemini, OpenAI or Ollama refinement]
     API --> Redis[Redis live context and rate limits]
     API --> DB[PostgreSQL metadata / opted-in transcripts]
     API -->|Explicit request + mutual consent| Alerts[SMTP / metadata webhook]

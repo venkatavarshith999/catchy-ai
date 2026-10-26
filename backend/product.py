@@ -27,7 +27,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 from sqlalchemy import delete, func, select, text
 from starlette.concurrency import run_in_threadpool
 
-from backend.detection import SIGNALS, redact
+from backend.detection import SIGNALS, analyze, redact
 from backend.notifications import (
     alert_available,
     deliver_alert,
@@ -47,7 +47,7 @@ from backend.product_store import (
     setup,
 )
 from backend.server import password_hash
-from llms.product import classify
+from llms.product import classify, provider_config
 
 
 def digest(value):
@@ -196,6 +196,13 @@ def create_app(database_url=None, redis_url=None):
         raise RuntimeError("Development email codes are forbidden in production")
     engine, Session = setup(database_url)
     live = LiveStore(redis_url if redis_url is not None else os.environ.get("REDIS_URL"))
+    speech_languages = {
+        row["code"]: row["speech"]
+        for row in json.loads(
+            (ROOT / "frontend" / "locales" / "languages.json").read_text(encoding="utf-8")
+        )
+        if row["status"] != "planned"
+    }
 
     async def cleanup():
         while True:
@@ -300,7 +307,7 @@ def create_app(database_url=None, redis_url=None):
         if live.limited(key, n, seconds):
             raise HTTPException(429, "rate_limited")
 
-    def authenticate(request, db):
+    def authenticate(request, db, *, check_rate=True):
         token = request.cookies.get("catchy_v2", "")
         record = db.get(Login, digest(token)) if token else None
         if not record or record.expires < time.time():
@@ -308,7 +315,8 @@ def create_app(database_url=None, redis_url=None):
         user = db.get(User, record.user_id)
         if not user:
             raise HTTPException(401, "sign_in_required")
-        limited("user:" + user.id)
+        if check_rate:
+            limited("user:" + user.id)
         return user
 
     def user_json(user):
@@ -374,6 +382,7 @@ def create_app(database_url=None, redis_url=None):
             "asr": bool(os.environ.get("ASR_WS_URL")),
             "alerts": alert_available(),
             "email": mail_available(),
+            "llm": provider_config(),
         }
 
     @app.post("/api/v2/auth/{action}")
@@ -576,7 +585,10 @@ def create_app(database_url=None, redis_url=None):
             raise HTTPException(422, "consent_required")
         allowed_language(data.language)
         limited("guest:" + digest(request.client.host if request.client else "unknown"), 60)
-        return classify([redact(t) for t in data.turns], data.language)
+        # Guests have no authenticated provider consent. Never send their text to a model.
+        result = analyze([redact(t) for t in data.turns], data.language)
+        result["model_status"] = "rules"
+        return result
 
     @app.get("/api/v2/calls")
     def calls(request: Request):
@@ -683,10 +695,25 @@ def create_app(database_url=None, redis_url=None):
         with live.lock(cid), Session.begin() as db:
             user = authenticate(request, db)
             call = call_owned(db, cid, user)
-            call.status = "completed"
-            call.updated = time.time()
+            if call.status == "active":
+                call.status = "completed"
+                call.updated = time.time()
             live.delete("call:" + cid)
             return {"ok": True}
+
+    @app.post("/api/v2/calls/{cid}/withdraw")
+    def withdraw(cid: str, request: Request):
+        with Session() as db:
+            owner_id = authenticate(request, db).id
+        # Serialize with turns: once acknowledged, no further turn can begin processing.
+        with live.lock("account:" + owner_id), live.lock(cid), Session.begin() as db:
+            user = authenticate(request, db)
+            call = call_owned(db, cid, user)
+            if call.status != "withdrawn":
+                call.status = "withdrawn"
+                call.updated = time.time()
+            live.delete("call:" + cid)
+            return {"ok": True, "status": "withdrawn"}
 
     @app.delete("/api/v2/calls/{cid}")
     def delete_call(cid: str, request: Request):
@@ -969,9 +996,25 @@ def create_app(database_url=None, redis_url=None):
         if socket.headers.get("origin") != origin:
             await socket.close(1008)
             return
-        try:
+        cid = socket.query_params.get("call_id", "")
+        language = socket.query_params.get("language", "")
+
+        def authorized(*, initial=False):
+            if not cid or len(cid) > 40:
+                raise HTTPException(422, "session_required")
             with Session() as db:
-                authenticate(socket, db)
+                # Audio is bounded separately; chunks must not consume the HTTP quota.
+                user = authenticate(socket, db, check_rate=initial)
+                call = call_owned(db, cid, user)
+                if call.status != "active" or call.mode != "speaker":
+                    raise HTTPException(409, "session_ended")
+                if live.get("call:" + cid) is None:
+                    raise HTTPException(409, "context_expired")
+                if not language or speech_languages.get(call.language) != language:
+                    raise HTTPException(422, "language_unavailable")
+
+        try:
+            await run_in_threadpool(authorized, initial=True)
         except HTTPException:
             await socket.close(1008)
             return
@@ -984,6 +1027,8 @@ def create_app(database_url=None, redis_url=None):
         try:
             import websockets
 
+            # Acceptance can yield; recheck before opening the upstream service.
+            await run_in_threadpool(authorized)
             async with websockets.connect(
                 url,
                 max_size=1000000,
@@ -992,9 +1037,8 @@ def create_app(database_url=None, redis_url=None):
                     "Authorization": "Bearer " + os.environ.get("ASR_SERVICE_TOKEN", "")
                 },
             ) as upstream:
-                await upstream.send(
-                    json.dumps({"language": socket.query_params.get("language", "en-IN")})
-                )
+                await run_in_threadpool(authorized)
+                await upstream.send(json.dumps({"language": language}))
 
                 async def upload():
                     total = 0
@@ -1004,28 +1048,54 @@ def create_app(database_url=None, redis_url=None):
                         total += len(chunk)
                         if len(chunk) > 200000 or total > 5000000 or time.monotonic() - start > 300:
                             raise ValueError("stream_limit")
-                        with Session() as db:
-                            authenticate(socket, db)
+                        await run_in_threadpool(authorized)
                         await upstream.send(chunk)
 
                 async def receive():
                     async for message in upstream:
                         data = json.loads(message)
+                        await run_in_threadpool(authorized)
                         if isinstance(data.get("text"), str) and len(data["text"]) <= 1500:
                             await socket.send_json({"text": redact(data["text"])})
                         elif data.get("error"):
                             await socket.send_json({"error": "speechError"})
 
-                tasks = [asyncio.create_task(upload()), asyncio.create_task(receive())]
-                _done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
-                for task in pending:
-                    task.cancel()
-                await asyncio.gather(*tasks, return_exceptions=True)
+                async def watch_authorization():
+                    # Also close an idle stream after logout, expiry, or withdrawal.
+                    deadline = time.monotonic() + 300
+                    while time.monotonic() < deadline:
+                        await asyncio.sleep(1)
+                        await run_in_threadpool(authorized)
+                    raise asyncio.TimeoutError()
+
+                tasks = [
+                    asyncio.create_task(upload()),
+                    asyncio.create_task(receive()),
+                    asyncio.create_task(watch_authorization()),
+                ]
+                try:
+                    done, _pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+                    for task in done:
+                        task.result()
+                finally:
+                    for task in tasks:
+                        if not task.done():
+                            task.cancel()
+                    await asyncio.gather(*tasks, return_exceptions=True)
+        except HTTPException:
+            await socket.close(1008)
+            return
+        except WebSocketDisconnect:
+            return
         except Exception:
             try:
                 await socket.send_json({"error": "speechError"})
             except Exception:
                 pass
+        try:
+            await socket.close()
+        except RuntimeError:
+            pass
 
     @app.get("/")
     @app.get("/index.html")
@@ -1052,6 +1122,8 @@ def create_app(database_url=None, redis_url=None):
                 ".png",
                 ".webmanifest",
                 ".woff2",
+                ".ttf",
+                ".webp",
             }
         ):
             raise HTTPException(404, "not_found")

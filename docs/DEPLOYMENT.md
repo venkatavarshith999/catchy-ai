@@ -21,8 +21,11 @@ Configure a trusted proxy and rate-limit policy for your hosting topology. Appli
 
 ## Providers
 
+- LLM_PROVIDER=gemini, GEMINI_API_KEY and GEMINI_MODEL enable Google Gemini contextual analysis. See `docs/GEMINI.md`. Both Compose configurations forward the server-side settings.
+
 - SMTP_HOST, SMTP_FROM, SMTP_PORT (587 STARTTLS or 465 TLS), SMTP_USER and SMTP_PASSWORD enable verification email and optional email metadata alerts.
 - ALERT_WEBHOOK_URL and ALERT_WEBHOOK_TOKEN enable an HTTPS SMS/WhatsApp adapter you operate. Its routing/incident contract is in `docs/API.md`. Creating invitations only creates copyable links; it does not send invitations automatically.
+- LLM_PROVIDER=openai, OPENAI_API_KEY and OPENAI_MODEL enable OpenAI Responses API refinement. See `docs/OPENAI.md`; only the server receives the secret. LLM_TIMEOUT defaults to 5 seconds for OpenAI. Health reports configuration, not verified connectivity.
 - LLM_PROVIDER=ollama, OLLAMA_URL, OLLAMA_MODEL and LLM_TIMEOUT configure contextual analysis. Provision an appropriate multilingual model separately. Rules remain active on provider failure. Do not expose Ollama directly to the internet.
 - ASR_WS_URL and ASR_SERVICE_TOKEN connect the app to a private Whisper worker. Install `requirements-asr.txt`, provision model weights, and run `python -m uvicorn backend.asr_service:app --host 0.0.0.0 --port 9001 --no-access-log` on the private network. Set the same token on both processes. Never expose the worker directly without authentication and transport security. Audio chunks stay in memory; model weights are downloaded/provisioned separately. CPU capacity and speech accuracy must be tested on your hardware. The worker has not been live-tested in this release environment.
 - ERROR_WEBHOOK_URL/TOKEN send only a fixed error event name, service name and timestamp. Request bodies, URLs, identity and stack traces are excluded. A failed monitoring request cannot replace the original error response.

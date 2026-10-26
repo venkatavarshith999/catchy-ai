@@ -1,8 +1,8 @@
 {
   "kind": "local-http-text-roundtrip",
   "requests": 12,
-  "p50_ms": 3.6,
-  "p95_ms": 5.43,
+  "p50_ms": 5.83,
+  "p95_ms": 9.21,
   "audio_end_to_end_ms": null,
   "field_validated": false,
   "account_lifecycle": "passed"

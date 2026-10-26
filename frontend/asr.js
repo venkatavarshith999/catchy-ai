@@ -23,12 +23,15 @@ export class BrowserASR extends ASRProvider {
       this.speechEnd = performance.now();
     };
     this.recognition.onresult = (e) => {
+      if (this.stopping) return;
       for (let i = e.resultIndex; i < e.results.length; i++)
         if (e.results[i].isFinal)
           onText(e.results[i][0].transcript, this.speechEnd);
     };
-    this.recognition.onerror = (e) =>
-      onError(e.error === "not-allowed" ? "permissionDenied" : "speechError");
+    this.recognition.onerror = (e) => {
+      if (!this.stopping)
+        onError(e.error === "not-allowed" ? "permissionDenied" : "speechError");
+    };
     this.recognition.onend = () => {
       if (!this.stopping) onError("speechError");
     };
@@ -40,7 +43,9 @@ export class BrowserASR extends ASRProvider {
   }
 }
 export class HostedASR extends ASRProvider {
-  async start({ language, onText, onError }) {
+  async start({ callId, language, onText, onError }) {
+    // Capture requires the application's authenticated, consented session.
+    if (!callId) throw Error("authNeeded");
     this.stopping = false;
     this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     if (this.stopping) {
@@ -48,27 +53,29 @@ export class HostedASR extends ASRProvider {
       throw Error("background");
     }
     this.socket = new WebSocket(
-      `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/api/v2/asr?language=${encodeURIComponent(language)}`,
+      `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/api/v2/asr?call_id=${encodeURIComponent(callId)}&language=${encodeURIComponent(language)}`,
     );
     await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        this.stop();
-        reject(Error("asrUnavailable"));
-      }, 10000);
-      this.socket.onopen = () => {
+      let settled = false;
+      const finish = (error) => {
+        if (settled) return;
+        settled = true;
         clearTimeout(timeout);
-        resolve();
+        this.cancelStart = null;
+        if (error) {
+          this.stop();
+          reject(error);
+        } else resolve();
       };
-      this.socket.onerror = () => {
-        clearTimeout(timeout);
-        reject(Error("asrUnavailable"));
-      };
-      this.socket.onclose = () => {
-        clearTimeout(timeout);
-        reject(Error("asrUnavailable"));
-      };
+      const timeout = setTimeout(() => finish(Error("asrUnavailable")), 10000);
+      this.cancelStart = () => finish(Error("background"));
+      this.socket.onopen = () => finish();
+      this.socket.onerror = this.socket.onclose = () =>
+        finish(Error("asrUnavailable"));
     });
+    if (this.stopping) throw Error("background");
     this.socket.onmessage = (e) => {
+      if (this.stopping) return;
       try {
         const m = JSON.parse(e.data);
         if (m.error) onError(m.error);
@@ -87,8 +94,11 @@ export class HostedASR extends ASRProvider {
     });
     this.recorder.onerror = () => onError("speechError");
     this.recorder.ondataavailable = async (e) => {
-      if (e.data.size && this.socket.readyState === 1)
-        this.socket.send(await e.data.arrayBuffer());
+      if (!this.stopping && e.data.size && this.socket.readyState === 1) {
+        const buffer = await e.data.arrayBuffer();
+        if (!this.stopping && this.socket.readyState === 1)
+          this.socket.send(buffer);
+      }
     };
     this.recorder.onstop = () => {
       if (!this.stopping) {
@@ -105,26 +115,76 @@ export class HostedASR extends ASRProvider {
   }
   stop() {
     this.stopping = true;
+    this.cancelStart?.();
     clearTimeout(this.chunkTimer);
     if (this.recorder?.state === "recording") this.recorder.stop();
     this.stream?.getTracks().forEach((t) => t.stop());
     this.socket?.close();
   }
 }
-export async function speakWarning(text, language) {
-  if (!window.speechSynthesis) return false;
-  const voices = speechSynthesis.getVoices();
-  const voice = voices.find((v) =>
-    v.lang.toLowerCase().startsWith(language.split("-")[0].toLowerCase()),
-  );
-  if (!voice) return false;
-  speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.voice = voice;
-  utterance.lang = language;
-  utterance.rate = 0.85;
-  speechSynthesis.speak(utterance);
-  return true;
+let pendingWarning;
+export function cancelWarning() {
+  // Some engines emit no event after cancel(). Always settle the pending promise.
+  pendingWarning?.(false);
+  try {
+    window.speechSynthesis?.cancel();
+  } catch {}
+}
+export function speakWarning(
+  text,
+  language,
+  { signal, timeoutMs = 15000 } = {},
+) {
+  cancelWarning();
+  const synthesis = window.speechSynthesis;
+  if (!synthesis || signal?.aborted) return Promise.resolve(false);
+  let voice;
+  try {
+    voice = synthesis
+      .getVoices()
+      .find((candidate) =>
+        candidate.lang
+          .toLowerCase()
+          .startsWith(language.split("-")[0].toLowerCase()),
+      );
+  } catch {
+    return Promise.resolve(false);
+  }
+  if (!voice) return Promise.resolve(false);
+  return new Promise((resolve) => {
+    let settled = false,
+      timer,
+      utterance;
+    const finish = (spoken) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      signal?.removeEventListener("abort", abort);
+      if (utterance) utterance.onend = utterance.onerror = null;
+      if (pendingWarning === finish) pendingWarning = null;
+      resolve(spoken);
+    };
+    const abort = () => {
+      finish(false);
+      try {
+        synthesis.cancel();
+      } catch {}
+    };
+    pendingWarning = finish;
+    signal?.addEventListener("abort", abort, { once: true });
+    timer = setTimeout(abort, Math.min(30000, Math.max(1, timeoutMs)));
+    try {
+      utterance = new SpeechSynthesisUtterance(text);
+      utterance.voice = voice;
+      utterance.lang = language;
+      utterance.rate = 0.85;
+      utterance.onend = () => finish(true);
+      utterance.onerror = () => finish(false);
+      synthesis.speak(utterance);
+    } catch {
+      abort();
+    }
+  });
 }
 export class NativeASR extends ASRProvider {
   async start({ language, onText, onError }) {
