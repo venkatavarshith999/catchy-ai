@@ -6,6 +6,15 @@ The product has a phone-first interface, a responsive family workspace, a FastAP
 
 Current build: [architecture and phased plan](docs/MASTER-BUILD-PLAN.md), [verified safety increment and remaining work](docs/MASTER-PHASE-RESULTS.md), and [SQLite recovery](docs/RECOVERY.md).
 
+## Project team
+
+- Varshith
+- Rohith
+- Teja
+- Vikram
+- Harshith
+- Anji
+
 ## Start on Windows
 
 1. Extract the entire ZIP to a normal folder.
